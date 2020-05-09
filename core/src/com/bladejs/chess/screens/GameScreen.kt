@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera
 
 class GameScreen : Screen {
     private val camera = OrthographicCamera()
+    private val board = Board()
 
     override fun render(delta: Float) {
         TODO("Not yet implemented")
