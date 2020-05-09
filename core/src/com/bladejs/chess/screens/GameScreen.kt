@@ -2,11 +2,11 @@ package com.bladejs.chess.screens
 
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.graphics.OrthographicCamera
-import com.bladejs.chess.entities.Board
+import com.bladejs.chess.entities.GameBoard
 
 class GameScreen : Screen {
     private val camera = OrthographicCamera()
-    private val board = Board()
+    private val board = GameBoard()
 
     override fun render(delta: Float) {
         TODO("Not yet implemented")

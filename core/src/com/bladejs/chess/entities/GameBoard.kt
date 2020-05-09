@@ -1,4 +1,4 @@
 package com.bladejs.chess.entities
 
-class Board {
+class GameBoard {
 }
