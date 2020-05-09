@@ -8,6 +8,11 @@ object DesktopLauncher {
     @JvmStatic
     fun main(arg: Array<String>) {
         val config = LwjglApplicationConfiguration()
-        LwjglApplication(ChessGame(), config)
+        with(config) {
+            title = "Chess"
+            width = 720
+            height = 720
+            LwjglApplication(ChessGame(), this)
+        }
     }
 }
