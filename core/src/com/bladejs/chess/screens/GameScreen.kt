@@ -2,6 +2,7 @@ package com.bladejs.chess.screens
 
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.graphics.OrthographicCamera
+import com.bladejs.chess.entities.Board
 
 class GameScreen : Screen {
     private val camera = OrthographicCamera()
