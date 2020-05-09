@@ -1,19 +1,25 @@
 package com.bladejs.chess.screens
 
+import com.badlogic.gdx.Game
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Screen
+import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.OrthographicCamera
+import com.bladejs.chess.ChessGame
 import com.bladejs.chess.entities.GameBoard
 
-class GameScreen : Screen {
+class GameScreen(private val game: ChessGame) : Screen {
     private val camera = OrthographicCamera()
     private val board = GameBoard()
 
     override fun render(delta: Float) {
-        TODO("Not yet implemented")
+        Gdx.gl.glClearColor(0f, 0f, 0f, 1f)
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
+        with(game.renderer) {
+        }
     }
 
     override fun dispose() {
-        TODO("Not yet implemented")
     }
 
     override fun resume() {}
