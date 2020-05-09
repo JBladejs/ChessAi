@@ -1,33 +1,22 @@
 package com.bladejs.chess.screens
 
 import com.badlogic.gdx.Screen
+import com.badlogic.gdx.graphics.OrthographicCamera
 
 class GameScreen : Screen {
-    override fun hide() {
-        TODO("Not yet implemented")
-    }
-
-    override fun show() {
-        TODO("Not yet implemented")
-    }
+    private val camera = OrthographicCamera()
 
     override fun render(delta: Float) {
-        TODO("Not yet implemented")
-    }
-
-    override fun pause() {
-        TODO("Not yet implemented")
-    }
-
-    override fun resume() {
-        TODO("Not yet implemented")
-    }
-
-    override fun resize(width: Int, height: Int) {
         TODO("Not yet implemented")
     }
 
     override fun dispose() {
         TODO("Not yet implemented")
     }
+
+    override fun resume() {}
+    override fun resize(width: Int, height: Int) {}
+    override fun pause() {}
+    override fun hide() {}
+    override fun show() {}
 }
