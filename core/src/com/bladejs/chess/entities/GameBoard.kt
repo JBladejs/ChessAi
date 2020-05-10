@@ -11,12 +11,13 @@ class GameBoard {
 
     operator fun get(i: Int) = board[i]
     fun render() {
+        val cellSize = Gdx.graphics.height / 9f
+        val halfCellSize = cellSize / 2f
+        val doubleCellSize = cellSize * 2f
+        val quarterCellSize = halfCellSize / 2f
         with(ChessGame.renderer) {
             begin(ShapeRenderer.ShapeType.Filled)
             color.set(Color.BROWN)
-            val cellSize = Gdx.graphics.height / 9f
-            val halfCellSize = cellSize / 2f
-            val doubleCellSize = cellSize * 2f
             rect(0f, 0f, halfCellSize, Gdx.graphics.height.toFloat())
             rect(0f, 0f, Gdx.graphics.width.toFloat(), halfCellSize)
             rect(0f, Gdx.graphics.height.toFloat() - halfCellSize, Gdx.graphics.width.toFloat(), halfCellSize)
@@ -27,6 +28,20 @@ class GameBoard {
                     val start = if (i % 2 == 0) cellSize + halfCellSize else halfCellSize
                     rect(start + (j * doubleCellSize), halfCellSize + (i * cellSize), cellSize, cellSize)
                 }
+            }
+            end()
+        }
+        with(ChessGame.batch) {
+            begin()
+            for (i in 0..1) {
+                var character = 'a'
+                val horizontalPlacement = if (i == 0) quarterCellSize + ChessGame.font.capHeight else Gdx.graphics.height - quarterCellSize
+                for (j in 1..8) ChessGame.font.draw(this, (character++).toString(), j * cellSize, horizontalPlacement)
+            }
+            for (i in 0..1) {
+                var character = 1
+                val verticalPlacement = if (i == 0) quarterCellSize else Gdx.graphics.height - quarterCellSize
+                for (j in 1..8) ChessGame.font.draw(this, (character++).toString(), verticalPlacement, j * cellSize)
             }
             end()
         }
