@@ -12,7 +12,8 @@ object DesktopLauncher {
             title = "Chess"
             width = 720
             height = 720
-            LwjglApplication(ChessGame(), this)
+            resizable = false
+            LwjglApplication(ChessGame, this)
         }
     }
 }

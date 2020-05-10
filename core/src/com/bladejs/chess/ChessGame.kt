@@ -10,7 +10,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.bladejs.chess.screens.GameScreen
 
-class ChessGame : Game() {
+object ChessGame : Game() {
     lateinit var renderer: ShapeRenderer
     lateinit var batch: SpriteBatch
     var currentScreen: Screen
