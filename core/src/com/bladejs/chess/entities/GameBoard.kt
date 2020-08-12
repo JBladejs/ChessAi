@@ -5,9 +5,16 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.utils.Array
 import com.bladejs.chess.ChessGame
+import com.bladejs.chess.entities.pieces.Pawn
+import com.bladejs.chess.entities.pieces.Piece
 
 class GameBoard {
     private val board = Array(8) { Array<BoardField>(8) }
+    private val pieces = ArrayList<Piece> ()
+
+    init {
+        pieces.add(Pawn(1, 1))
+    }
 
     operator fun get(i: Int) = board[i]
     fun render() {
@@ -43,6 +50,8 @@ class GameBoard {
                 val verticalPlacement = if (i == 0) quarterCellSize else Gdx.graphics.height - quarterCellSize
                 for (j in 1..8) ChessGame.font.draw(this, (character++).toString(), verticalPlacement, j * cellSize)
             }
+
+            pieces.forEach { it.render(cellSize, halfCellSize) }
             end()
         }
     }
