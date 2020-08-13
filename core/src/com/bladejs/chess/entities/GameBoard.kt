@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.utils.Array
 import com.bladejs.chess.ChessGame
 import com.bladejs.chess.entities.pieces.*
+import com.bladejs.chess.entities.pieces.Piece.Color.*
 
 class GameBoard {
     private val board = Array(8) { Array<BoardField>(8) }
@@ -13,15 +14,24 @@ class GameBoard {
 
     init {
         with(pieces) {
-            for (i in 0..7) add(Pawn(i, 1))
-            add(King(4, 0))
-            add(Queen(3, 0))
-            add(Rook(0, 0))
-            add(Rook(7, 0))
-            add(Bishop(2, 0))
-            add(Bishop(5, 0))
-            add(Knight(1, 0))
-            add(Knight(6, 0))
+            for (i in 0..7) add(Pawn(i, 1, WHITE))
+            for (i in 0..7) add(Pawn(i, 6, BLACK))
+            add(King(4, 0, WHITE))
+            add(Queen(3, 0, WHITE))
+            add(Rook(0, 0, WHITE))
+            add(Rook(7, 0, WHITE))
+            add(Bishop(2, 0, WHITE))
+            add(Bishop(5, 0, WHITE))
+            add(Knight(1, 0, WHITE))
+            add(Knight(6, 0, WHITE))
+            add(King(4, 7, BLACK))
+            add(Queen(3, 7, BLACK))
+            add(Rook(0, 7, BLACK))
+            add(Rook(7, 7, BLACK))
+            add(Bishop(2, 7, BLACK))
+            add(Bishop(5, 7, BLACK))
+            add(Knight(1, 7, BLACK))
+            add(Knight(6, 7, BLACK))
         }
     }
 
