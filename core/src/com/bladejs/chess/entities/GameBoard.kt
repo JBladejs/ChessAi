@@ -3,39 +3,72 @@ package com.bladejs.chess.entities
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
-import com.badlogic.gdx.utils.Array
+import com.badlogic.gdx.utils.Array as GdxArray
 import com.bladejs.chess.ChessGame
 import com.bladejs.chess.entities.pieces.*
 import com.bladejs.chess.entities.pieces.Piece.Color.*
 
 class GameBoard {
-    private val board = Array(8) { Array<BoardField>(8) }
+    private val board = GdxArray<GdxArray<BoardField>>(8)
     private val pieces = ArrayList<Piece>()
 
     init {
-        with(pieces) {
-            for (i in 0..7) add(Pawn(i, 1, WHITE))
-            for (i in 0..7) add(Pawn(i, 6, BLACK))
-            add(King(4, 0, WHITE))
-            add(Queen(3, 0, WHITE))
-            add(Rook(0, 0, WHITE))
-            add(Rook(7, 0, WHITE))
-            add(Bishop(2, 0, WHITE))
-            add(Bishop(5, 0, WHITE))
-            add(Knight(1, 0, WHITE))
-            add(Knight(6, 0, WHITE))
-            add(King(4, 7, BLACK))
-            add(Queen(3, 7, BLACK))
-            add(Rook(0, 7, BLACK))
-            add(Rook(7, 7, BLACK))
-            add(Bishop(2, 7, BLACK))
-            add(Bishop(5, 7, BLACK))
-            add(Knight(1, 7, BLACK))
-            add(Knight(6, 7, BLACK))
+        for (i in 0..7) {
+            board.add(GdxArray<BoardField>(8))
+            for (j in 0..7) {
+                board[i].add(BoardField())
+            }
+        }
+        for (i in 0..7) add(Pawn(i, 1, WHITE))
+        for (i in 0..7) add(Pawn(i, 6, BLACK))
+        add(King(4, 0, WHITE))
+        add(Queen(3, 0, WHITE))
+        add(Rook(0, 0, WHITE))
+        add(Rook(7, 0, WHITE))
+        add(Bishop(2, 0, WHITE))
+        add(Bishop(5, 0, WHITE))
+        add(Knight(1, 0, WHITE))
+        add(Knight(6, 0, WHITE))
+        add(King(4, 7, BLACK))
+        add(Queen(3, 7, BLACK))
+        add(Rook(0, 7, BLACK))
+        add(Rook(7, 7, BLACK))
+        add(Bishop(2, 7, BLACK))
+        add(Bishop(5, 7, BLACK))
+        add(Knight(1, 7, BLACK))
+        add(Knight(6, 7, BLACK))
+    }
+
+    operator fun set(i: Int, j: Int, piece: Piece?) {
+        val oldPiece = board[i][j].piece
+        if (oldPiece != null) {
+            remove(oldPiece)
+        }
+        if (piece != null) {
+            add(piece)
+
         }
     }
 
-    operator fun get(i: Int) = board[i]
+    operator fun get(i: Int, j: Int): Piece? = board[i][j].piece
+
+    fun add(piece: Piece) {
+        pieces.add(piece)
+        board[piece.x][piece.y].piece = piece
+    }
+
+    fun remove(piece: Piece) {
+        pieces.remove(piece)
+        board[piece.x][piece.y].piece = null
+    }
+
+    fun move(piece: Piece, x: Int, y: Int) {
+        remove(piece)
+        piece.x = x
+        piece.y = y
+        add(piece)
+    }
+
     fun render() {
         val cellSize = Gdx.graphics.height / 9f
         val halfCellSize = cellSize / 2f

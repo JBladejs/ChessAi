@@ -10,8 +10,8 @@ object DesktopLauncher {
         val config = LwjglApplicationConfiguration()
         with(config) {
             title = "Chess"
-            width = 720
-            height = 720
+            width = 850
+            height = 850
             resizable = false
             LwjglApplication(ChessGame, this)
         }
