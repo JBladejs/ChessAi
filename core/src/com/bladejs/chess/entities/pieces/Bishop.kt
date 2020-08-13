@@ -1,7 +1,11 @@
 package com.bladejs.chess.entities.pieces
 
 import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.utils.Array
+import com.bladejs.chess.misc.Position
 
 class Bishop(x: Int, y: Int, color: Color) : Piece(Texture("bishop.png"), Texture("bishopB.png"), x, y, color) {
-    override fun canMoveTo(x: Int, y: Int): Boolean = true
+    override fun getAvailableMoves(): Array<Position> {
+        TODO("Not yet implemented")
+    }
 }
