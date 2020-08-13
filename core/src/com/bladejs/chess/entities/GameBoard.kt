@@ -8,9 +8,13 @@ import com.bladejs.chess.ChessGame
 import com.bladejs.chess.entities.pieces.*
 import com.bladejs.chess.entities.pieces.Piece.Color.*
 
-class GameBoard {
+object GameBoard {
     private val board = GdxArray<GdxArray<BoardField>>(8)
     private val pieces = ArrayList<Piece>()
+    private var cellSize = Gdx.graphics.height / 9f
+    private var halfCellSize = cellSize / 2f
+    private var doubleCellSize = cellSize * 2f
+    private var quarterCellSize = halfCellSize / 2f
 
     init {
         for (i in 0..7) {
@@ -47,6 +51,13 @@ class GameBoard {
 
     operator fun get(i: Int, j: Int): Piece? = board[i][j].piece
 
+    fun getBoardFieldAt(x: Float, y: Float): BoardField? {
+        val i = ((x - halfCellSize) / cellSize).toInt()
+        val j = ((y - halfCellSize) / cellSize).toInt()
+        return if (i < 8 && j < 8) board[i][j]
+        else null
+    }
+
     fun add(piece: Piece) {
         pieces.add(piece)
         board[piece.x][piece.y].piece = piece
@@ -65,10 +76,10 @@ class GameBoard {
     }
 
     fun render() {
-        val cellSize = Gdx.graphics.height / 9f
-        val halfCellSize = cellSize / 2f
-        val doubleCellSize = cellSize * 2f
-        val quarterCellSize = halfCellSize / 2f
+        cellSize = Gdx.graphics.height / 9f
+        halfCellSize = cellSize / 2f
+        doubleCellSize = cellSize * 2f
+        quarterCellSize = halfCellSize / 2f
         with(ChessGame.renderer) {
             begin(ShapeRenderer.ShapeType.Filled)
             color.set(Color.BROWN)
