@@ -41,13 +41,8 @@ class GameBoard {
 
     operator fun set(i: Int, j: Int, piece: Piece?) {
         val oldPiece = board[i][j].piece
-        if (oldPiece != null) {
-            remove(oldPiece)
-        }
-        if (piece != null) {
-            add(piece)
-
-        }
+        if (oldPiece != null) remove(oldPiece)
+        if (piece != null) add(piece)
     }
 
     operator fun get(i: Int, j: Int): Piece? = board[i][j].piece
