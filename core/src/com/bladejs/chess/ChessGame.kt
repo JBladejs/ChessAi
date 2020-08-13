@@ -25,7 +25,7 @@ object ChessGame : Game() {
 
     override fun create() {
         camera = OrthographicCamera()
-        camera.setToOrtho(false, 850f, 850f)
+        camera.setToOrtho(false, Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat())
         renderer = ShapeRenderer()
         renderer.setAutoShapeType(true)
         batch = SpriteBatch()

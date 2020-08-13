@@ -7,6 +7,7 @@ import com.badlogic.gdx.utils.Array as GdxArray
 import com.bladejs.chess.ChessGame
 import com.bladejs.chess.entities.pieces.*
 import com.bladejs.chess.entities.pieces.Piece.Color.*
+import com.bladejs.chess.misc.Position
 
 object GameBoard {
     private val board = GdxArray<GdxArray<BoardField>>(8)
@@ -49,13 +50,13 @@ object GameBoard {
         if (piece != null) add(piece)
     }
 
-    operator fun get(i: Int, j: Int): Piece? = board[i][j].piece
+    operator fun get(i: Int, j: Int): BoardField = board[i][j]
 
-    fun getBoardFieldAt(x: Float, y: Float): BoardField? {
+    fun getFieldAt(x: Float, y: Float): Position {
+        if (x < halfCellSize || y < halfCellSize) return Position(-1, -1)
         val i = ((x - halfCellSize) / cellSize).toInt()
         val j = ((y - halfCellSize) / cellSize).toInt()
-        return if (i < 8 && j < 8) board[i][j]
-        else null
+        return Position(i, j)
     }
 
     fun add(piece: Piece) {
@@ -69,10 +70,14 @@ object GameBoard {
     }
 
     fun move(piece: Piece, x: Int, y: Int) {
-        remove(piece)
-        piece.x = x
-        piece.y = y
-        add(piece)
+        if (piece.canMoveTo(x, y)) {
+            remove(piece)
+            val takenPiece = board[x][y].piece
+            if (takenPiece != null) remove(takenPiece)
+            piece.x = x
+            piece.y = y
+            add(piece)
+        }
     }
 
     fun render() {
