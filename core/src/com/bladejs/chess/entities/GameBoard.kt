@@ -5,15 +5,24 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.utils.Array
 import com.bladejs.chess.ChessGame
-import com.bladejs.chess.entities.pieces.Pawn
-import com.bladejs.chess.entities.pieces.Piece
+import com.bladejs.chess.entities.pieces.*
 
 class GameBoard {
     private val board = Array(8) { Array<BoardField>(8) }
-    private val pieces = ArrayList<Piece> ()
+    private val pieces = ArrayList<Piece>()
 
     init {
-        pieces.add(Pawn(1, 1))
+        with(pieces) {
+            for (i in 0..7) add(Pawn(i, 1))
+            add(King(4, 0))
+            add(Queen(3, 0))
+            add(Rook(0, 0))
+            add(Rook(7, 0))
+            add(Bishop(2, 0))
+            add(Bishop(5, 0))
+            add(Knight(1, 0))
+            add(Knight(6, 0))
+        }
     }
 
     operator fun get(i: Int) = board[i]
