@@ -50,7 +50,7 @@ object GameBoard {
         if (piece != null) add(piece)
     }
 
-    operator fun get(i: Int, j: Int): BoardField = board[i][j]
+    operator fun get(i: Int): GdxArray<BoardField> = board[i]
 
     fun getFieldAt(x: Float, y: Float): Position {
         if (x < halfCellSize || y < halfCellSize) return Position(-1, -1)
