@@ -3,6 +3,7 @@ package com.bladejs.chess.entities.pieces
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.utils.Array as GdxArray
 import com.bladejs.chess.ChessGame
+import com.bladejs.chess.entities.GameBoard
 import com.bladejs.chess.misc.Position
 
 abstract class Piece(private val whiteTexture: Texture, private val blackTexture: Texture, var x: Int, var y: Int, val color: Color) {
@@ -18,6 +19,28 @@ abstract class Piece(private val whiteTexture: Texture, private val blackTexture
             if (it.x == x && it.y == y) return true
         }
         return false
+    }
+
+    protected fun searchLineForMoves(bottomX: Int, topX: Int, bottomY: Int, topY: Int): GdxArray<Position> {
+        val positions = GdxArray<Position>()
+        if (bottomX < 0 || bottomX > 7 || bottomY < 0 || bottomY > 7) return positions
+        if (topX < 0 || topX > 7 || topY < 0 || topY > 7) return positions
+        var i = bottomX
+        var j = bottomY
+        var iter = 0
+        while (iter < 1) {
+                if (i == topX && j == topY) iter++
+                if (GameBoard[i][j].isEmpty) positions.add(Position(i, j))
+                else if (GameBoard[i][j].piece!!.color == Color.BLACK && GameBoard[i][j].piece !is King) {
+                    positions.add(Position(i, j))
+                    break
+                }
+            if (topX > i) i++
+            if (topX < i) i--
+            if (topY > j) j++
+            if (topY < j) j--
+        }
+        return positions
     }
 
     abstract fun getAvailableMoves(): GdxArray<Position>
