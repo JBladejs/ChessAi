@@ -32,7 +32,6 @@ object InputHandler : InputProcessor {
     override fun touchDragged(screenX: Int, screenY: Int, pointer: Int): Boolean {
         val piece = draggedPiece
         camera.unproject(mousePos.set(screenX.toFloat(), screenY.toFloat(), 0f))
-        println()
         if (piece != null) {
             piece.draggedX = mousePos.x - startingMousePos.x
             piece.draggedY = mousePos.y - startingMousePos.y

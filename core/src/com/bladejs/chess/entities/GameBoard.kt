@@ -24,7 +24,7 @@ object GameBoard {
                 board[i].add(BoardField())
             }
         }
-        for (i in 0..7) add(Pawn(i, 1, WHITE))
+        //for (i in 0..7) add(Pawn(i, 1, WHITE))
         for (i in 0..7) add(Pawn(i, 6, BLACK))
         add(King(4, 0, WHITE))
         add(Queen(3, 0, WHITE))
