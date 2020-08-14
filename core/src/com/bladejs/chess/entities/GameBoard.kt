@@ -8,11 +8,12 @@ import com.bladejs.chess.ChessGame
 import com.bladejs.chess.entities.pieces.*
 import com.bladejs.chess.entities.pieces.Piece.Color.*
 import com.bladejs.chess.misc.Position
+import com.bladejs.chess.misc.remove
 import kotlin.math.abs
 
 object GameBoard {
     private val board = GdxArray<GdxArray<BoardField>>(8)
-    private val pieces = ArrayList<Piece>()
+    private val pieces = GdxArray<Piece>()
     private var cellSize = Gdx.graphics.height / 9f
     private var halfCellSize = cellSize / 2f
     private var doubleCellSize = cellSize * 2f
