@@ -11,13 +11,11 @@ class Pawn(x: Int, y: Int, color: Color) : Piece(Texture("pawn.png"), Texture("p
         var yIncrease = 1
         if (color == Color.BLACK) yIncrease = -1
         if (y + yIncrease in 0..7) {
-            if (GameBoard[x][y + yIncrease].isEmpty) positions.add(Position(x, y + yIncrease))
-            if (x - 1 >= 0 && GameBoard[x - 1][y + yIncrease].isTakeable && GameBoard[x - 1][y + yIncrease].piece!!.color != color)
-                positions.add(Position(x - 1, y + yIncrease))
-            if (x + 1 <= 7 && GameBoard[x + 1][y + yIncrease].isTakeable && GameBoard[x + 1][y + yIncrease].piece!!.color != color)
-                positions.add(Position(x + 1, y + yIncrease))
+            positions.add(checkForMove(x, y + yIncrease, false))
+            positions.add(checkForTake(x - 1, y + yIncrease))
+            positions.add(checkForTake(x + 1, y + yIncrease))
         }
-        if (moveCount == 0 && GameBoard[x][y + (yIncrease * 2)].isEmpty) positions.add(Position(x, y + (yIncrease * 2)))
+        if (moveCount == 0) positions.add(checkForMove(x, y + (yIncrease * 2), false))
         return positions
     }
 }

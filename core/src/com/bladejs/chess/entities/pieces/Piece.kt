@@ -17,9 +17,21 @@ abstract class Piece(private val whiteTexture: Texture, private val blackTexture
 
     fun canMoveTo(x: Int, y: Int): Boolean {
         getAvailableMoves().forEach {
-            if (it.x == x && it.y == y) return true
+            if (it?.x == x && it.y == y) return true
         }
         return false
+    }
+
+    protected fun checkForMove(x: Int, y: Int, inclTakes: Boolean): Position? {
+        if (x !in 0..7 || y !in 0..7) return null
+        return if (GameBoard[x][y].isEmpty) Position(x, y)
+        else if (inclTakes && GameBoard[x][y].isTakeable) Position(x, y)
+        else null
+    }
+
+    protected fun checkForTake(x: Int, y: Int): Position? {
+        if (x !in 0..7 || y !in 0..7) return null
+        return if (GameBoard[x][y].isTakeable) Position(x, y) else null
     }
 
     protected fun checkStraightLinesForMoves(): GdxArray<Position> {
@@ -50,13 +62,13 @@ abstract class Piece(private val whiteTexture: Texture, private val blackTexture
         var j = bottomY
         var iter = 0
         while (iter < 1) {
-                if (!diagonal && i == topX && j == topY) iter++
-                if (diagonal && (i == topX || j == topY)) iter++
-                if (GameBoard[i][j].isEmpty) positions.add(Position(i, j))
-                else if (GameBoard[i][j].piece!!.color != color && GameBoard[i][j].isTakeable) {
-                    positions.add(Position(i, j))
-                    break
-                }
+            if (!diagonal && i == topX && j == topY) iter++
+            if (diagonal && (i == topX || j == topY)) iter++
+            if (GameBoard[i][j].isEmpty) positions.add(Position(i, j))
+            else if (GameBoard[i][j].piece!!.color != color && GameBoard[i][j].isTakeable) {
+                positions.add(Position(i, j))
+                break
+            }
             if (topX > i) i++
             if (topX < i) i--
             if (topY > j) j++
