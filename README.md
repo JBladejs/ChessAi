@@ -1,2 +1,2 @@
 # ChessAi
-A Chess game with an ai
+A Chess game with an AI
