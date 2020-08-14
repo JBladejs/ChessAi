@@ -7,6 +7,7 @@ import com.bladejs.chess.entities.GameBoard
 import com.bladejs.chess.misc.Position
 
 abstract class Piece(private val whiteTexture: Texture, private val blackTexture: Texture, var x: Int, var y: Int, val color: Color) {
+    var moveCount = 0
     var draggedX = 0f
     var draggedY = 0f
 
@@ -31,7 +32,7 @@ abstract class Piece(private val whiteTexture: Texture, private val blackTexture
         while (iter < 1) {
                 if (i == topX && j == topY) iter++
                 if (GameBoard[i][j].isEmpty) positions.add(Position(i, j))
-                else if (GameBoard[i][j].piece!!.color == Color.BLACK && GameBoard[i][j].piece !is King) {
+                else if (GameBoard[i][j].piece!!.color != color && GameBoard[i][j].isTakeable) {
                     positions.add(Position(i, j))
                     break
                 }
