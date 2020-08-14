@@ -22,7 +22,9 @@ abstract class Piece(private val whiteTexture: Texture, private val blackTexture
         return false
     }
 
-    protected fun searchLineForMoves(bottomX: Int, topX: Int, bottomY: Int, topY: Int): GdxArray<Position> {
+    protected fun searchLineForMoves(bottomX: Int, topX: Int, bottomY: Int, topY: Int): GdxArray<Position> = searchLineForMoves(bottomX, topX, bottomY, topY, false)
+
+    protected fun searchLineForMoves(bottomX: Int, topX: Int, bottomY: Int, topY: Int, diagonal: Boolean): GdxArray<Position> {
         val positions = GdxArray<Position>()
         if (bottomX < 0 || bottomX > 7 || bottomY < 0 || bottomY > 7) return positions
         if (topX < 0 || topX > 7 || topY < 0 || topY > 7) return positions
@@ -30,7 +32,8 @@ abstract class Piece(private val whiteTexture: Texture, private val blackTexture
         var j = bottomY
         var iter = 0
         while (iter < 1) {
-                if (i == topX && j == topY) iter++
+                if (!diagonal && i == topX && j == topY) iter++
+                if (diagonal && (i == topX || j == topY)) iter++
                 if (GameBoard[i][j].isEmpty) positions.add(Position(i, j))
                 else if (GameBoard[i][j].piece!!.color != color && GameBoard[i][j].isTakeable) {
                     positions.add(Position(i, j))
