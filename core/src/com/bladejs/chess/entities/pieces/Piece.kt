@@ -6,13 +6,17 @@ import com.bladejs.chess.ChessGame
 import com.bladejs.chess.entities.GameBoard
 import com.bladejs.chess.misc.Position
 
-abstract class Piece(private val whiteTexture: Texture, private val blackTexture: Texture, var x: Int, var y: Int, val color: Color) {
+abstract class Piece(private val whiteTexture: Texture, private val blackTexture: Texture, var x: Int, var y: Int, val color: Color, val type: PieceType) {
     var moveCount = 0
     var draggedX = 0f
     var draggedY = 0f
 
     enum class Color {
         BLACK, WHITE
+    }
+
+    enum class PieceType {
+        BISHOP, KING, KNIGHT, PAWN, QUEEN, ROOK
     }
 
     fun canMoveTo(x: Int, y: Int): Boolean {

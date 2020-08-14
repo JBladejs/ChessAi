@@ -5,7 +5,7 @@ import com.badlogic.gdx.utils.Array
 import com.bladejs.chess.entities.GameBoard
 import com.bladejs.chess.misc.Position
 
-class Pawn(x: Int, y: Int, color: Color) : Piece(Texture("pawn.png"), Texture("pawnB.png"), x, y, color) {
+class Pawn(x: Int, y: Int, color: Color) : Piece(Texture("pawn.png"), Texture("pawnB.png"), x, y, color, PieceType.PAWN) {
     var movedTwoFields = false
     override fun getAvailableMoves(): Array<Position> {
         val positions = Array<Position>()

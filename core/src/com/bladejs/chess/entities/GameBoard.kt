@@ -7,6 +7,8 @@ import com.badlogic.gdx.utils.Array as GdxArray
 import com.bladejs.chess.ChessGame
 import com.bladejs.chess.entities.pieces.*
 import com.bladejs.chess.entities.pieces.Piece.Color.*
+import com.bladejs.chess.handlers.GameHandler
+import com.bladejs.chess.misc.Move
 import com.bladejs.chess.misc.Position
 import com.bladejs.chess.misc.remove
 import kotlin.math.abs
@@ -44,6 +46,7 @@ object GameBoard {
         add(Bishop(5, 7, BLACK))
         add(Knight(1, 7, BLACK))
         add(Knight(6, 7, BLACK))
+        GameHandler.deleteMove()
     }
 
     operator fun set(i: Int, j: Int, piece: Piece?) {
@@ -64,17 +67,19 @@ object GameBoard {
     fun add(piece: Piece) {
         pieces.add(piece)
         board[piece.x][piece.y].piece = piece
+        GameHandler.appendToMove(Move.Type.ADD, Position(piece.x, piece.y), piece.type)
     }
 
     fun remove(piece: Piece) {
         pieces.remove(piece)
         board[piece.x][piece.y].piece = null
+        GameHandler.appendToMove(Move.Type.REMOVE, Position(piece.x, piece.y), piece.type)
     }
 
     private fun forceMove(piece: Piece, x: Int, y: Int) {
-        remove(piece)
         val takenPiece = board[x][y].piece
         if (takenPiece != null) remove(takenPiece)
+        remove(piece)
         piece.x = x
         piece.y = y
         add(piece)
@@ -97,8 +102,11 @@ object GameBoard {
             }
             //Normal move
             forceMove(piece, x, y)
+            GameHandler.confirmMove(piece.color)
         }
     }
+
+    fun undo() = GameHandler.undoMove()
 
     fun render() {
         cellSize = Gdx.graphics.height / 9f

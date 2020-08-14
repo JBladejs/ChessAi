@@ -1,10 +1,13 @@
-package com.bladejs.chess.input
+package com.bladejs.chess.handlers
 
+import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Input
 import com.badlogic.gdx.InputProcessor
 import com.badlogic.gdx.math.Vector3
 import com.bladejs.chess.ChessGame
 import com.bladejs.chess.entities.GameBoard
 import com.bladejs.chess.entities.pieces.Piece
+import com.badlogic.gdx.Input.Keys
 
 object InputHandler : InputProcessor {
     private val mousePos = Vector3()
@@ -15,8 +18,12 @@ object InputHandler : InputProcessor {
     override fun mouseMoved(screenX: Int, screenY: Int): Boolean = false
     override fun keyTyped(character: Char): Boolean = false
     override fun scrolled(amount: Int): Boolean = false
-    override fun keyUp(keycode: Int): Boolean = false
     override fun keyDown(keycode: Int): Boolean = false
+
+    override fun keyUp(keycode: Int): Boolean {
+        if (keycode == Keys.U) GameBoard.undo()
+        return true
+    }
 
     override fun touchDown(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
         camera.unproject(mousePos.set(screenX.toFloat(), screenY.toFloat(), 0f))
