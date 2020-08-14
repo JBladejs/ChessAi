@@ -25,13 +25,13 @@ abstract class Piece(private val whiteTexture: Texture, private val blackTexture
     protected fun checkForMove(x: Int, y: Int, inclTakes: Boolean): Position? {
         if (x !in 0..7 || y !in 0..7) return null
         return if (GameBoard[x][y].isEmpty) Position(x, y)
-        else if (inclTakes && GameBoard[x][y].isTakeable) Position(x, y)
+        else if (inclTakes && GameBoard[x][y].isTakeable && color != GameBoard[x][y].piece!!.color) Position(x, y)
         else null
     }
 
     protected fun checkForTake(x: Int, y: Int): Position? {
         if (x !in 0..7 || y !in 0..7) return null
-        return if (GameBoard[x][y].isTakeable) Position(x, y) else null
+        return if (GameBoard[x][y].isTakeable && color != GameBoard[x][y].piece!!.color) Position(x, y) else null
     }
 
     protected fun checkStraightLinesForMoves(): GdxArray<Position> {
