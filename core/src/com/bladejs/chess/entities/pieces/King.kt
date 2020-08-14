@@ -6,7 +6,7 @@ import com.badlogic.gdx.utils.Array as GdxArray
 import com.bladejs.chess.entities.GameBoard
 import com.bladejs.chess.misc.Position
 
-class King(x: Int, y: Int, color: Color) : Piece(Texture("king.png"), Texture("kingB.png"), x, y, color, PieceType.KING) {
+class King(x: Int, y: Int, color: Color) : Piece(Texture("king.png"), Texture("kingB.png"), x, y, color) {
     override fun getAvailableMoves(): GdxArray<Position> {
         val positions = GdxArray<Position>()
         positions.add(checkForMove(x, y + 1, true))

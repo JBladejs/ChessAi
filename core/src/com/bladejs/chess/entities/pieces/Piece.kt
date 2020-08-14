@@ -6,17 +6,13 @@ import com.bladejs.chess.ChessGame
 import com.bladejs.chess.entities.GameBoard
 import com.bladejs.chess.misc.Position
 
-abstract class Piece(private val whiteTexture: Texture, private val blackTexture: Texture, var x: Int, var y: Int, val color: Color, val type: PieceType) {
+abstract class Piece(private val whiteTexture: Texture, private val blackTexture: Texture, var x: Int, var y: Int, val color: Color): Cloneable{
     var moveCount = 0
     var draggedX = 0f
     var draggedY = 0f
 
     enum class Color {
         BLACK, WHITE
-    }
-
-    enum class PieceType {
-        BISHOP, KING, KNIGHT, PAWN, QUEEN, ROOK
     }
 
     fun canMoveTo(x: Int, y: Int): Boolean {
@@ -85,5 +81,9 @@ abstract class Piece(private val whiteTexture: Texture, private val blackTexture
 
     fun render(scale: Float, margin: Float) {
         ChessGame.batch.draw(if (color == Color.WHITE) whiteTexture else blackTexture, (margin + x * scale) + draggedX, (margin + y * scale) + draggedY, scale, scale)
+    }
+
+    public override fun clone(): Piece {
+        return super.clone() as Piece
     }
 }

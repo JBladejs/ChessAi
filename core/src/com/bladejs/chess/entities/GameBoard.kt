@@ -67,13 +67,13 @@ object GameBoard {
     fun add(piece: Piece) {
         pieces.add(piece)
         board[piece.x][piece.y].piece = piece
-        GameHandler.appendToMove(Move.Type.ADD, Position(piece.x, piece.y), piece.type)
+        GameHandler.appendToMove(Move.Type.ADD, Position(piece.x, piece.y), piece.clone())
     }
 
     fun remove(piece: Piece) {
         pieces.remove(piece)
         board[piece.x][piece.y].piece = null
-        GameHandler.appendToMove(Move.Type.REMOVE, Position(piece.x, piece.y), piece.type)
+        GameHandler.appendToMove(Move.Type.REMOVE, Position(piece.x, piece.y), piece.clone())
     }
 
     private fun forceMove(piece: Piece, x: Int, y: Int) {
@@ -102,7 +102,7 @@ object GameBoard {
             }
             //Normal move
             forceMove(piece, x, y)
-            GameHandler.confirmMove(piece.color)
+            GameHandler.confirmMove()
         }
     }
 
