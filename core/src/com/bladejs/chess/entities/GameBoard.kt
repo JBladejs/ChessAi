@@ -8,6 +8,7 @@ import com.bladejs.chess.ChessGame
 import com.bladejs.chess.entities.pieces.*
 import com.bladejs.chess.entities.pieces.Piece.Color.*
 import com.bladejs.chess.misc.Position
+import kotlin.math.abs
 
 object GameBoard {
     private val board = GdxArray<GdxArray<BoardField>>(8)
@@ -69,15 +70,28 @@ object GameBoard {
         board[piece.x][piece.y].piece = null
     }
 
+    private fun forceMove(piece: Piece, x: Int, y: Int) {
+        remove(piece)
+        val takenPiece = board[x][y].piece
+        if (takenPiece != null) remove(takenPiece)
+        piece.x = x
+        piece.y = y
+        add(piece)
+        piece.moveCount++
+    }
+
     fun move(piece: Piece, x: Int, y: Int) {
+        //En Passant
+        if (piece is Pawn && x != piece.x && board[x][y].isEmpty) if (piece.color == BLACK)
+            remove(board[x][y - 1].piece!!) else remove(board[x][y + 1].piece!!)
+        //Castling
+        if (piece is King && abs(x - piece.x) > 1) {
+            if (x == 2) forceMove(board[0][y].piece!!, 3, y)
+            else forceMove(board[7][y].piece!!, 5, y)
+        }
+        //Normal move
         if (piece.canMoveTo(x, y)) {
-            remove(piece)
-            val takenPiece = board[x][y].piece
-            if (takenPiece != null) remove(takenPiece)
-            piece.x = x
-            piece.y = y
-            add(piece)
-            piece.moveCount++
+            forceMove(piece, x, y)
         }
     }
 
