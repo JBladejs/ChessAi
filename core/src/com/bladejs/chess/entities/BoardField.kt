@@ -7,6 +7,6 @@ class BoardField {
     var piece: Piece? = null
     val isEmpty : Boolean
     get() = piece == null
-    val isTakeable : Boolean
+    val isTakable : Boolean
     get() = !isEmpty && piece !is King
 }
