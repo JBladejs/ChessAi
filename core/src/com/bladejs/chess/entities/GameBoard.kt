@@ -81,16 +81,16 @@ object GameBoard {
     }
 
     fun move(piece: Piece, x: Int, y: Int) {
-        //En Passant
-        if (piece is Pawn && x != piece.x && board[x][y].isEmpty) if (piece.color == BLACK)
-            remove(board[x][y - 1].piece!!) else remove(board[x][y + 1].piece!!)
-        //Castling
-        if (piece is King && abs(x - piece.x) > 1) {
-            if (x == 2) forceMove(board[0][y].piece!!, 3, y)
-            else forceMove(board[7][y].piece!!, 5, y)
-        }
-        //Normal move
         if (piece.canMoveTo(x, y)) {
+            //En Passant
+            if (piece is Pawn && x != piece.x && board[x][y].isEmpty) if (piece.color == BLACK)
+                remove(board[x][y - 1].piece!!) else remove(board[x][y + 1].piece!!)
+            //Castling
+            if (piece is King && abs(x - piece.x) > 1) {
+                if (x == 2) forceMove(board[0][y].piece!!, 3, y)
+                else forceMove(board[7][y].piece!!, 5, y)
+            }
+            //Normal move
             forceMove(piece, x, y)
         }
     }
