@@ -22,9 +22,27 @@ abstract class Piece(private val whiteTexture: Texture, private val blackTexture
         return false
     }
 
-    protected fun searchLineForMoves(bottomX: Int, topX: Int, bottomY: Int, topY: Int): GdxArray<Position> = searchLineForMoves(bottomX, topX, bottomY, topY, false)
+    protected fun checkStraightLinesForMoves(): GdxArray<Position> {
+        val positions = GdxArray<Position>()
+        positions.addAll(searchLineForMoves(x + 1, 7, y, y))
+        positions.addAll(searchLineForMoves(x - 1, 0, y, y))
+        positions.addAll(searchLineForMoves(x, x, y + 1, 7))
+        positions.addAll(searchLineForMoves(x, x, y - 1, 0))
+        return positions
+    }
 
-    protected fun searchLineForMoves(bottomX: Int, topX: Int, bottomY: Int, topY: Int, diagonal: Boolean): GdxArray<Position> {
+    protected fun checkDiagonalLinesForMoves(): GdxArray<Position> {
+        val positions = com.badlogic.gdx.utils.Array<Position>()
+        positions.addAll(searchLineForMoves(x + 1, 7, y + 1, 7, true))
+        positions.addAll(searchLineForMoves(x - 1, 0, y - 1, 0, true))
+        positions.addAll(searchLineForMoves(x + 1, 7, y - 1, 0, true))
+        positions.addAll(searchLineForMoves(x - 1, 0, y + 1, 7, true))
+        return positions
+    }
+
+    private fun searchLineForMoves(bottomX: Int, topX: Int, bottomY: Int, topY: Int): GdxArray<Position> = searchLineForMoves(bottomX, topX, bottomY, topY, false)
+
+    private fun searchLineForMoves(bottomX: Int, topX: Int, bottomY: Int, topY: Int, diagonal: Boolean): GdxArray<Position> {
         val positions = GdxArray<Position>()
         if (bottomX < 0 || bottomX > 7 || bottomY < 0 || bottomY > 7) return positions
         if (topX < 0 || topX > 7 || topY < 0 || topY > 7) return positions
