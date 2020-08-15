@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.bladejs.chess.ChessGame
 import com.bladejs.chess.entities.GameBoard
+import com.bladejs.chess.entities.PromotionWindow
 import com.bladejs.chess.misc.IntColor
 
 class GameScreen(private val camera: OrthographicCamera) : Screen {
@@ -14,13 +15,14 @@ class GameScreen(private val camera: OrthographicCamera) : Screen {
     private val background = IntColor(27, 94, 20, 255)
 
     override fun render(delta: Float) {
-        if (!GameBoard.promotion) {
+        if (!GameBoard.promotionWindow.promotion) {
             Gdx.gl.glClearColor(background.red, background.green, background.blue, background.alpha)
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
             camera.update()
             board.render()
         } else {
-            board.renderPromotion()
+            camera.update()
+            GameBoard.promotionWindow.render()
         }
     }
 
