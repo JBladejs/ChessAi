@@ -26,10 +26,14 @@ object GameHandler {
         currentPieces.clear()
     }
 
+    private fun changeCurrentPlayer() {
+        currentPlayer = if (currentPlayer == Piece.Color.WHITE) Piece.Color.BLACK else Piece.Color.WHITE
+    }
+
     fun confirmMove() {
         moves.add(Move(currentMoveTypes.clone(), currentPositions.clone(), currentPieces.clone()))
         deleteMove()
-        currentPlayer = if (currentPlayer == Piece.Color.WHITE) Piece.Color.BLACK else Piece.Color.WHITE
+        changeCurrentPlayer()
     }
 
     fun undoMove() {
@@ -41,5 +45,6 @@ object GameHandler {
         }
         moves.removeIndex(moves.size - 1)
         deleteMove()
+        changeCurrentPlayer()
     }
 }
