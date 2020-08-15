@@ -12,6 +12,9 @@ abstract class Piece(private val whiteTexture: Texture, private val blackTexture
     var moveCount = 0
     var draggedX = 0f
     var draggedY = 0f
+    private var renderX: Int = x
+    private var renderY: Int = y
+    var memOnly = false
 
     enum class Color {
         BLACK, WHITE
@@ -33,9 +36,7 @@ abstract class Piece(private val whiteTexture: Texture, private val blackTexture
         return if (GameBoard[x][y].isTakable && color != GameBoard[x][y].piece!!.color) Position(x, y) else null
     }
 
-    private fun searchLineForMoves(bottomX: Int, topX: Int, bottomY: Int, topY: Int): GdxArray<Position> = searchLineForMoves(bottomX, topX, bottomY, topY, false)
-
-    private fun searchLineForMoves(bottomX: Int, topX: Int, bottomY: Int, topY: Int, diagonal: Boolean): GdxArray<Position> {
+    private fun searchLineForMoves(bottomX: Int, topX: Int, bottomY: Int, topY: Int, diagonal: Boolean = false): GdxArray<Position> {
         val positions = GdxArray<Position>()
         if (bottomX < 0 || bottomX > 7 || bottomY < 0 || bottomY > 7) return positions
         if (topX < 0 || topX > 7 || topY < 0 || topY > 7) return positions
@@ -89,7 +90,11 @@ abstract class Piece(private val whiteTexture: Texture, private val blackTexture
     }
 
     fun render(scale: Float, margin: Float) {
-        ChessGame.batch.draw(if (color == Color.WHITE) whiteTexture else blackTexture, (margin + x * scale) + draggedX, (margin + y * scale) + draggedY, scale, scale)
+        if (!memOnly) {
+            renderX = x
+            renderY = y
+        }
+        ChessGame.batch.draw(if (color == Color.WHITE) whiteTexture else blackTexture, (margin + renderX * scale) + draggedX, (margin + renderY * scale) + draggedY, scale, scale)
     }
 
     fun renderPrecise(x: Float, y: Float, scale: Float) {
