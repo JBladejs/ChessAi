@@ -31,6 +31,18 @@ class PromotionWindow(private val cellSize: Float) {
         promotion = true
     }
 
+    private fun promote(piece: PromotionPiece) {
+        val color = if (promotionPosition.y == 7) Piece.Color.WHITE else Piece.Color.BLACK
+        when (piece) {
+            PromotionPiece.QUEEN -> GameBoard.add(Queen(promotionPosition.x, promotionPosition.y, color))
+            PromotionPiece.KNIGHT -> GameBoard.add(Knight(promotionPosition.x, promotionPosition.y, color))
+            PromotionPiece.ROOK -> GameBoard.add(Rook(promotionPosition.x, promotionPosition.y, color))
+            PromotionPiece.BISHOP -> GameBoard.add(Bishop(promotionPosition.x, promotionPosition.y, color))
+        }
+        promotion = false
+        GameHandler.confirmMove()
+    }
+
     fun handlePromotionMenuInput(mouseX: Float, mouseY: Float) {
         var clickedOnPiece = false
         var j = 0
@@ -47,18 +59,6 @@ class PromotionWindow(private val cellSize: Float) {
             2 -> promote(PromotionPiece.ROOK)
             3 -> promote(PromotionPiece.BISHOP)
         }
-    }
-
-    private fun promote(piece: PromotionPiece) {
-        val color = if (promotionPosition.y == 7) Piece.Color.WHITE else Piece.Color.BLACK
-        when (piece) {
-            PromotionPiece.QUEEN -> GameBoard.add(Queen(promotionPosition.x, promotionPosition.y, color))
-            PromotionPiece.KNIGHT -> GameBoard.add(Knight(promotionPosition.x, promotionPosition.y, color))
-            PromotionPiece.ROOK -> GameBoard.add(Rook(promotionPosition.x, promotionPosition.y, color))
-            PromotionPiece.BISHOP -> GameBoard.add(Bishop(promotionPosition.x, promotionPosition.y, color))
-        }
-        promotion = false
-        GameHandler.confirmMove()
     }
 
     fun render() {

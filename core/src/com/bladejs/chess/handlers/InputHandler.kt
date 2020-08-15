@@ -1,24 +1,17 @@
 package com.bladejs.chess.handlers
 
-import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.Input
+import com.badlogic.gdx.Input.Keys
 import com.badlogic.gdx.InputProcessor
 import com.badlogic.gdx.math.Vector3
 import com.bladejs.chess.ChessGame
 import com.bladejs.chess.entities.GameBoard
 import com.bladejs.chess.entities.pieces.Piece
-import com.badlogic.gdx.Input.Keys
 
 object InputHandler : InputProcessor {
     private val mousePos = Vector3()
     private var startingMousePos = Vector3()
     private val camera = ChessGame.camera
     private var draggedPiece: Piece? = null
-
-    override fun mouseMoved(screenX: Int, screenY: Int): Boolean = false
-    override fun keyTyped(character: Char): Boolean = false
-    override fun scrolled(amount: Int): Boolean = false
-    override fun keyDown(keycode: Int): Boolean = false
 
     override fun keyUp(keycode: Int): Boolean {
         if (GameBoard.promotionWindow.promotion) return false
@@ -66,4 +59,9 @@ object InputHandler : InputProcessor {
         }
         return true
     }
+
+    override fun mouseMoved(screenX: Int, screenY: Int): Boolean = false
+    override fun keyTyped(character: Char): Boolean = false
+    override fun scrolled(amount: Int): Boolean = false
+    override fun keyDown(keycode: Int): Boolean = false
 }

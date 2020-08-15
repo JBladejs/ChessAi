@@ -3,17 +3,16 @@ package com.bladejs.chess.entities
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
-import com.badlogic.gdx.math.Rectangle
-import com.badlogic.gdx.utils.Array as GdxArray
 import com.bladejs.chess.ChessGame
 import com.bladejs.chess.entities.pieces.*
-import com.bladejs.chess.entities.pieces.Piece.Color.*
+import com.bladejs.chess.entities.pieces.Piece.Color.BLACK
+import com.bladejs.chess.entities.pieces.Piece.Color.WHITE
 import com.bladejs.chess.handlers.GameHandler
 import com.bladejs.chess.misc.Move
 import com.bladejs.chess.misc.Position
 import com.bladejs.chess.misc.remove
-import com.bladejs.chess.screens.GameScreen
 import kotlin.math.abs
+import com.badlogic.gdx.utils.Array as GdxArray
 
 object GameBoard {
     private val board = GdxArray<GdxArray<BoardField>>(8)
@@ -52,13 +51,13 @@ object GameBoard {
         GameHandler.deleteMove()
     }
 
+    operator fun get(i: Int): GdxArray<BoardField> = board[i]
+
     operator fun set(i: Int, j: Int, piece: Piece?) {
         val oldPiece = board[i][j].piece
         if (oldPiece != null) remove(oldPiece)
         if (piece != null) add(piece)
     }
-
-    operator fun get(i: Int): GdxArray<BoardField> = board[i]
 
     fun getFieldAt(x: Float, y: Float): Position {
         if (x < halfCellSize || y < halfCellSize) return Position(-1, -1)

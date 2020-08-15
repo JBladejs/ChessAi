@@ -16,8 +16,8 @@ object ChessGame : Game() {
     lateinit var font: BitmapFont
     lateinit var camera: OrthographicCamera
     var currentScreen: Screen
-    get() = getScreen()
-    set(value) = setScreen(value)
+        get() = getScreen()
+        set(value) = setScreen(value)
 
     override fun create() {
         camera = OrthographicCamera()

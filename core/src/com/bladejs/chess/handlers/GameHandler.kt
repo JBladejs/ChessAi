@@ -1,7 +1,7 @@
 package com.bladejs.chess.handlers
 
 import com.bladejs.chess.entities.GameBoard
-import com.bladejs.chess.entities.pieces.*
+import com.bladejs.chess.entities.pieces.Piece
 import com.bladejs.chess.misc.Move
 import com.bladejs.chess.misc.Position
 import com.bladejs.chess.misc.clone
@@ -19,15 +19,15 @@ object GameHandler {
         currentPieces.add(piece)
     }
 
-    fun confirmMove() {
-        moves.add(Move(currentMoveTypes.clone(), currentPositions.clone(), currentPieces.clone()))
-        deleteMove()
-    }
-
     fun deleteMove() {
         currentPositions.clear()
         currentMoveTypes.clear()
         currentPieces.clear()
+    }
+
+    fun confirmMove() {
+        moves.add(Move(currentMoveTypes.clone(), currentPositions.clone(), currentPieces.clone()))
+        deleteMove()
     }
 
     fun undoMove() {
