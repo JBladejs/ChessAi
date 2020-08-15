@@ -21,22 +21,28 @@ object InputHandler : InputProcessor {
     override fun keyDown(keycode: Int): Boolean = false
 
     override fun keyUp(keycode: Int): Boolean {
+        if (GameBoard.promotion) return false
         if (keycode == Keys.U) GameBoard.undo()
         return true
     }
 
     override fun touchDown(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
         camera.unproject(mousePos.set(screenX.toFloat(), screenY.toFloat(), 0f))
-        val position = GameBoard.getFieldAt(mousePos.x, mousePos.y)
-        if (position.x < 8 && position.y < 8 && position.x >= 0 && position.y >= 0) {
-            val field = GameBoard[position.x][position.y]
-            if (!field.isEmpty) draggedPiece = field.piece
-            startingMousePos = mousePos.cpy()
+        if (!GameBoard.promotion) {
+            val position = GameBoard.getFieldAt(mousePos.x, mousePos.y)
+            if (position.x < 8 && position.y < 8 && position.x >= 0 && position.y >= 0) {
+                val field = GameBoard[position.x][position.y]
+                if (!field.isEmpty) draggedPiece = field.piece
+                startingMousePos = mousePos.cpy()
+            }
+        } else {
+            GameBoard.handlePromotionMenuInput(mousePos.x, mousePos.y)
         }
         return true
     }
 
     override fun touchDragged(screenX: Int, screenY: Int, pointer: Int): Boolean {
+        if (GameBoard.promotion) return false
         val piece = draggedPiece
         camera.unproject(mousePos.set(screenX.toFloat(), screenY.toFloat(), 0f))
         if (piece != null) {
@@ -47,6 +53,7 @@ object InputHandler : InputProcessor {
     }
 
     override fun touchUp(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
+        if (GameBoard.promotion) return false
         camera.unproject(mousePos.set(screenX.toFloat(), screenY.toFloat(), 0f))
         val piece = draggedPiece
         draggedPiece = null

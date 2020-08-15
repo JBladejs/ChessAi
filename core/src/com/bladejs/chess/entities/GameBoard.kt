@@ -3,6 +3,7 @@ package com.bladejs.chess.entities
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
+import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.utils.Array as GdxArray
 import com.bladejs.chess.ChessGame
 import com.bladejs.chess.entities.pieces.*
@@ -11,6 +12,7 @@ import com.bladejs.chess.handlers.GameHandler
 import com.bladejs.chess.misc.Move
 import com.bladejs.chess.misc.Position
 import com.bladejs.chess.misc.remove
+import com.bladejs.chess.screens.GameScreen
 import kotlin.math.abs
 
 object GameBoard {
@@ -20,6 +22,13 @@ object GameBoard {
     private var halfCellSize = cellSize / 2f
     private var doubleCellSize = cellSize * 2f
     private var quarterCellSize = halfCellSize / 2f
+    var promotion = false
+    var promotionPosition = Position(0, 0)
+    private val promotionOptions = GdxArray<Rectangle>(4)
+
+    enum class PromotionPiece {
+        QUEEN, KNIGHT, ROOK, BISHOP
+    }
 
     init {
         for (i in 0..7) {
@@ -47,6 +56,10 @@ object GameBoard {
         add(Knight(1, 7, BLACK))
         add(Knight(6, 7, BLACK))
         GameHandler.deleteMove()
+        promotionOptions.add(Rectangle((Gdx.graphics.width / 2f) - (2f * cellSize), (Gdx.graphics.height / 2f) - halfCellSize, cellSize, cellSize))
+        promotionOptions.add(Rectangle((Gdx.graphics.width / 2f) - cellSize, (Gdx.graphics.height / 2f) - halfCellSize, cellSize, cellSize))
+        promotionOptions.add(Rectangle((Gdx.graphics.width / 2f), (Gdx.graphics.height / 2f) - halfCellSize, cellSize, cellSize))
+        promotionOptions.add(Rectangle((Gdx.graphics.width / 2) + cellSize, (Gdx.graphics.height / 2) - halfCellSize, cellSize, cellSize))
     }
 
     operator fun set(i: Int, j: Int, piece: Piece?) {
@@ -90,10 +103,17 @@ object GameBoard {
         if (piece.canMoveTo(x, y)) {
             if (piece is Pawn) {
                 //Pawn moving two fields
-                if (abs (y - piece.y) > 1) piece.movedTwoFields = true
+                if (abs(y - piece.y) > 1) piece.movedTwoFields = true
                 //En Passant
                 if (x != piece.x && board[x][y].isEmpty) if (piece.color == BLACK)
                     remove(board[x][y + 1].piece!!) else remove(board[x][y - 1].piece!!)
+                if (y == 0 || y == 7) {
+                    remove(piece)
+                    if (!board[x][y].isEmpty) remove(board[x][y].piece!!)
+                    promotion = true
+                    promotionPosition = Position(x, y)
+                    return
+                }
             }
             //Castling
             if (piece is King && abs(x - piece.x) > 1) {
@@ -104,6 +124,36 @@ object GameBoard {
             forceMove(piece, x, y)
             GameHandler.confirmMove()
         }
+    }
+    
+    fun handlePromotionMenuInput(mouseX: Float, mouseY: Float) {
+        var clickedOnPiece = false
+        var j = 0
+        for (i in 0 until promotionOptions.size) {
+            if (promotionOptions[i].contains(mouseX, mouseY)) {
+                clickedOnPiece = true
+                j = i
+                break
+            }
+        }
+        if (clickedOnPiece) when (j) {
+            0 -> promote(PromotionPiece.QUEEN)
+            1 -> promote(PromotionPiece.KNIGHT)
+            2 -> promote(PromotionPiece.ROOK)
+            3 -> promote(PromotionPiece.BISHOP)
+        }
+    }
+
+    private fun promote(piece: PromotionPiece) {
+        val color = if (promotionPosition.y == 7) WHITE else BLACK
+        when (piece) {
+            PromotionPiece.QUEEN -> add(Queen(promotionPosition.x, promotionPosition.y, color))
+            PromotionPiece.KNIGHT -> add(Knight(promotionPosition.x, promotionPosition.y, color))
+            PromotionPiece.ROOK -> add(Rook(promotionPosition.x, promotionPosition.y, color))
+            PromotionPiece.BISHOP -> add(Bishop(promotionPosition.x, promotionPosition.y, color))
+        }
+        promotion = false
+        GameHandler.confirmMove()
     }
 
     fun undo() = GameHandler.undoMove()
@@ -143,6 +193,24 @@ object GameBoard {
             }
 
             pieces.forEach { it.render(cellSize, halfCellSize) }
+            end()
+        }
+    }
+
+    fun renderPromotion() {
+        with(ChessGame.renderer) {
+            begin(ShapeRenderer.ShapeType.Filled)
+            color.set(Color.BLUE)
+            rect((Gdx.graphics.width / 2f) - (2f * cellSize) - 5f, (Gdx.graphics.height / 2f) - halfCellSize - 5f, cellSize * 4f + 10f, cellSize + 10f)
+            end()
+        }
+        with(ChessGame.batch) {
+            begin()
+            val color = if (promotionPosition.y == 7) WHITE else BLACK
+            Queen(0, 0, color).renderPrecise(promotionOptions[0].x, promotionOptions[0].y, promotionOptions[0].width)
+            Knight(0, 0, color).renderPrecise(promotionOptions[1].x, promotionOptions[1].y, promotionOptions[1].width)
+            Rook(0, 0, color).renderPrecise(promotionOptions[2].x, promotionOptions[2].y, promotionOptions[2].width)
+            Bishop(0, 0, color).renderPrecise(promotionOptions[3].x, promotionOptions[3].y, promotionOptions[3].width)
             end()
         }
     }

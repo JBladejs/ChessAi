@@ -83,6 +83,10 @@ abstract class Piece(private val whiteTexture: Texture, private val blackTexture
         ChessGame.batch.draw(if (color == Color.WHITE) whiteTexture else blackTexture, (margin + x * scale) + draggedX, (margin + y * scale) + draggedY, scale, scale)
     }
 
+    fun renderPrecise(x: Float, y: Float, scale: Float) {
+        ChessGame.batch.draw(if (color == Color.WHITE) whiteTexture else blackTexture, x, y, scale, scale)
+    }
+
     public override fun clone(): Piece {
         return super.clone() as Piece
     }
