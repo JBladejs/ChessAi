@@ -9,3 +9,7 @@ fun <T> GdxArray<T>.clone(): GdxArray<T> {
     clonedArray.addAll(this)
     return clonedArray
 }
+
+fun <T> GdxArray<T>.addValue(value: T?) {
+    if (value != null) add(value)
+}

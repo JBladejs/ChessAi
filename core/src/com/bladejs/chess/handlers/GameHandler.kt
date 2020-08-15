@@ -12,6 +12,7 @@ object GameHandler {
     private val currentMoveTypes = GdxArray<Move.Type>()
     private val currentPieces = GdxArray<Piece>()
     private val currentPositions = GdxArray<Position>()
+    var currentPlayer = Piece.Color.WHITE
 
     fun appendToMove(moveType: Move.Type, position: Position, piece: Piece) {
         currentMoveTypes.add(moveType)
@@ -28,6 +29,7 @@ object GameHandler {
     fun confirmMove() {
         moves.add(Move(currentMoveTypes.clone(), currentPositions.clone(), currentPieces.clone()))
         deleteMove()
+        currentPlayer = if (currentPlayer == Piece.Color.WHITE) Piece.Color.BLACK else Piece.Color.WHITE
     }
 
     fun undoMove() {

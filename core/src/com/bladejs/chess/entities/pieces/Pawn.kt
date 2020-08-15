@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.utils.Array
 import com.bladejs.chess.entities.GameBoard
 import com.bladejs.chess.misc.Position
+import com.bladejs.chess.misc.addValue
 
 class Pawn(x: Int, y: Int, color: Color) : Piece(Texture("pawn.png"), Texture("pawnB.png"), x, y, color) {
     var movedTwoFields = false
@@ -17,18 +18,18 @@ class Pawn(x: Int, y: Int, color: Color) : Piece(Texture("pawn.png"), Texture("p
         return null
     }
 
-    override fun getAvailableMoves(): Array<Position> {
+    override fun getAllMoves(): Array<Position> {
         val positions = Array<Position>()
         var yIncrease = 1
         if (color == Color.BLACK) yIncrease = -1
         if (y + yIncrease in 0..7) {
-            positions.add(checkForMove(x, y + yIncrease, false))
-            positions.add(checkForTake(x - 1, y + yIncrease))
-            positions.add(checkForTake(x + 1, y + yIncrease))
-            positions.add(checkForEnPassant(x - 1, y))
-            positions.add(checkForEnPassant(x + 1, y))
+            positions.addValue(checkForMove(x, y + yIncrease, false))
+            positions.addValue(checkForTake(x - 1, y + yIncrease))
+            positions.addValue(checkForTake(x + 1, y + yIncrease))
+            positions.addValue(checkForEnPassant(x - 1, y))
+            positions.addValue(checkForEnPassant(x + 1, y))
         }
-        if (moveCount == 0) positions.add(checkForMove(x, y + (yIncrease * 2), false))
+        if (moveCount == 0) positions.addValue(checkForMove(x, y + (yIncrease * 2), false))
         return positions
     }
 }

@@ -3,7 +3,9 @@ package com.bladejs.chess.entities.pieces
 import com.badlogic.gdx.graphics.Texture
 import com.bladejs.chess.ChessGame
 import com.bladejs.chess.entities.GameBoard
+import com.bladejs.chess.handlers.GameHandler
 import com.bladejs.chess.misc.Position
+import com.bladejs.chess.misc.addValue
 import com.badlogic.gdx.utils.Array as GdxArray
 
 abstract class Piece(private val whiteTexture: Texture, private val blackTexture: Texture, var x: Int, var y: Int, val color: Color) : Cloneable {
@@ -43,11 +45,12 @@ abstract class Piece(private val whiteTexture: Texture, private val blackTexture
         while (iter < 1) {
             if (!diagonal && i == topX && j == topY) iter++
             if (diagonal && (i == topX || j == topY)) iter++
-            if (GameBoard[i][j].isEmpty) positions.add(Position(i, j))
-            else if (GameBoard[i][j].piece!!.color != color && GameBoard[i][j].isTakable) {
-                positions.add(Position(i, j))
+            val take = checkForTake(i, j)
+            if (take != null) {
+                positions.add(take)
                 break
             }
+            else positions.addValue(checkForMove(i, j, false))
             if (topX > i) i++
             if (topX < i) i--
             if (topY > j) j++
@@ -74,7 +77,9 @@ abstract class Piece(private val whiteTexture: Texture, private val blackTexture
         return positions
     }
 
-    abstract fun getAvailableMoves(): GdxArray<Position>
+    protected abstract fun getAllMoves(): GdxArray<Position>
+
+    private fun getAvailableMoves(): GdxArray<Position> = if (GameHandler.currentPlayer == color) getAllMoves() else GdxArray<Position>()
 
     fun canMoveTo(x: Int, y: Int): Boolean {
         getAvailableMoves().forEach {

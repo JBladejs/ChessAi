@@ -3,6 +3,7 @@ package com.bladejs.chess.entities.pieces
 import com.badlogic.gdx.graphics.Texture
 import com.bladejs.chess.entities.GameBoard
 import com.bladejs.chess.misc.Position
+import com.bladejs.chess.misc.addValue
 import com.badlogic.gdx.utils.Array as GdxArray
 
 class King(x: Int, y: Int, color: Color) : Piece(Texture("king.png"), Texture("kingB.png"), x, y, color) {
@@ -25,18 +26,18 @@ class King(x: Int, y: Int, color: Color) : Piece(Texture("king.png"), Texture("k
         return null
     }
 
-    override fun getAvailableMoves(): GdxArray<Position> {
+    override fun getAllMoves(): GdxArray<Position> {
         val positions = GdxArray<Position>()
-        positions.add(checkForMove(x, y + 1, true))
-        positions.add(checkForMove(x + 1, y + 1, true))
-        positions.add(checkForMove(x + 1, y, true))
-        positions.add(checkForMove(x + 1, y - 1, true))
-        positions.add(checkForMove(x, y - 1, true))
-        positions.add(checkForMove(x - 1, y - 1, true))
-        positions.add(checkForMove(x - 1, y, true))
-        positions.add(checkForMove(x - 1, y + 1, true))
-        positions.add(checkForCastle(2, y))
-        positions.add(checkForCastle(6, y))
+        positions.addValue(checkForMove(x, y + 1, true))
+        positions.addValue(checkForMove(x + 1, y + 1, true))
+        positions.addValue(checkForMove(x + 1, y, true))
+        positions.addValue(checkForMove(x + 1, y - 1, true))
+        positions.addValue(checkForMove(x, y - 1, true))
+        positions.addValue(checkForMove(x - 1, y - 1, true))
+        positions.addValue(checkForMove(x - 1, y, true))
+        positions.addValue(checkForMove(x - 1, y + 1, true))
+        positions.addValue(checkForCastle(2, y))
+        positions.addValue(checkForCastle(6, y))
         return positions
     }
 }
