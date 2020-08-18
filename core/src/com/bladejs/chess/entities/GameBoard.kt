@@ -16,7 +16,7 @@ import com.badlogic.gdx.utils.Array as GdxArray
 
 object GameBoard {
     private val board = GdxArray<GdxArray<BoardField>>(8)
-    private val pieces = PieceCollection()
+    val pieces = PieceCollection()
     private var cellSize = Gdx.graphics.height / 9f
     private var halfCellSize = cellSize / 2f
     private var doubleCellSize = cellSize * 2f
@@ -163,10 +163,7 @@ object GameBoard {
                 val verticalPlacement = if (i == 0) quarterCellSize else Gdx.graphics.height - quarterCellSize
                 for (j in 1..8) ChessGame.font.draw(this, (character++).toString(), verticalPlacement, j * cellSize)
             }
-            pieces.getPieces(WHITE).forEach {
-                it.render(cellSize, halfCellSize)
-            }
-            pieces.getPieces(BLACK).forEach {
+            pieces.forEach {
                 it.render(cellSize, halfCellSize)
             }
             end()
