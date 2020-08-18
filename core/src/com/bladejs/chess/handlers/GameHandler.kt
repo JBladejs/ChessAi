@@ -13,6 +13,7 @@ object GameHandler {
     private val currentPieces = GdxArray<Piece>()
     private val currentPositions = GdxArray<Position>()
     var currentPlayer = Piece.Color.WHITE
+    var availableMoves = GdxArray<Position>()
 
     fun appendToMove(moveType: Move.Type, position: Position, piece: Piece) {
         currentMoveTypes.add(moveType)
