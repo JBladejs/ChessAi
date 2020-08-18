@@ -1,4 +1,4 @@
-package com.bladejs.chess.entities
+package com.bladejs.chess.entities.pieces.windows
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
@@ -6,11 +6,12 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.utils.Array
 import com.bladejs.chess.ChessGame
+import com.bladejs.chess.entities.GameBoard
 import com.bladejs.chess.entities.pieces.*
 import com.bladejs.chess.handlers.GameHandler
 import com.bladejs.chess.misc.Position
 
-class PromotionWindow(private val cellSize: Float) {
+class PromotionWindow(cellSize: Float): Window(cellSize) {
     private val promotionOptions = Array<Rectangle>(4)
     var promotion = false
     var promotionPosition = Position(0, 0)
@@ -61,13 +62,8 @@ class PromotionWindow(private val cellSize: Float) {
         }
     }
 
-    fun render() {
-        with(ChessGame.renderer) {
-            begin(ShapeRenderer.ShapeType.Filled)
-            color.set(Color.BLUE)
-            rect((Gdx.graphics.width / 2f) - (2f * cellSize) - 5f, (Gdx.graphics.height / 2f) - (cellSize / 2f) - 5f, cellSize * 4f + 10f, cellSize + 10f)
-            end()
-        }
+    override fun render() {
+        super.render()
         with(ChessGame.batch) {
             begin()
             val color = if (promotionPosition.y == 7) Piece.Color.WHITE else Piece.Color.BLACK
