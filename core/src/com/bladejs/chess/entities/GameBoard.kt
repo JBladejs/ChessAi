@@ -22,6 +22,7 @@ object GameBoard {
     private var doubleCellSize = cellSize * 2f
     private var quarterCellSize = halfCellSize / 2f
     val promotionWindow = PromotionWindow(cellSize)
+    var rendering = true
 
     init {
         for (i in 0..7) {
@@ -66,6 +67,20 @@ object GameBoard {
         return Position(i, j)
     }
 
+    fun checkForCheck(color: Piece.Color): Boolean {
+        var king: Piece? = null
+        for (i in 0 until pieces.size) {
+            if (pieces[i] is King && pieces[i].color == color) {
+                king = pieces[i]
+                break
+            }
+        }
+        pieces.forEach {
+            if (it.color != color && it.canMoveTo(king!!.x, king.y, false)) return true
+        }
+        return false
+    }
+
     fun add(piece: Piece) {
         pieces.add(piece)
         board[piece.x][piece.y].piece = piece
@@ -88,15 +103,15 @@ object GameBoard {
         piece.moveCount++
     }
 
-    fun move(piece: Piece, x: Int, y: Int) {
-        if (piece.canMoveTo(x, y)) {
+    fun move(piece: Piece, x: Int, y: Int, foresight: Boolean = true) {
+        if (piece.canMoveTo(x, y, foresight)) {
             if (piece is Pawn) {
                 //Pawn moving two fields
                 if (abs(y - piece.y) > 1) piece.movedTwoFields = true
                 //En Passant
                 if (x != piece.x && board[x][y].isEmpty) if (piece.color == BLACK)
                     remove(board[x][y + 1].piece!!) else remove(board[x][y - 1].piece!!)
-                if (y == 0 || y == 7) {
+                if (foresight && (y == 0 || y == 7)) {
                     remove(piece)
                     if (!board[x][y].isEmpty) remove(board[x][y].piece!!)
                     promotionWindow.open(Position(x, y))
@@ -112,6 +127,11 @@ object GameBoard {
             forceMove(piece, x, y)
             GameHandler.confirmMove()
         }
+    }
+
+    fun move(startX: Int, startY: Int, endX: Int, endY: Int, foresight: Boolean = true) {
+        if (board[startX][startY].isEmpty) return
+        move(board[startX][startY].piece!!, endX, endY, foresight)
     }
 
     fun undo() = GameHandler.undoMove()

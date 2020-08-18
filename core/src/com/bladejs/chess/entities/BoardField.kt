@@ -8,5 +8,5 @@ class BoardField {
     val isEmpty: Boolean
         get() = piece == null
     val isTakable: Boolean
-        get() = !isEmpty && piece !is King
+        get() = !isEmpty
 }

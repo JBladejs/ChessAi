@@ -12,6 +12,10 @@ class GameScreen(private val camera: OrthographicCamera) : Screen {
     private val background = IntColor(27, 94, 20, 255)
 
     override fun render(delta: Float) {
+        if (!GameBoard.rendering){
+            camera.update()
+            return
+        }
         if (!GameBoard.promotionWindow.promotion) {
             Gdx.gl.glClearColor(background.red, background.green, background.blue, background.alpha)
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)

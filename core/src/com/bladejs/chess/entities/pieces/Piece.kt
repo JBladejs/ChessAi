@@ -12,9 +12,6 @@ abstract class Piece(private val whiteTexture: Texture, private val blackTexture
     var moveCount = 0
     var draggedX = 0f
     var draggedY = 0f
-    private var renderX: Int = x
-    private var renderY: Int = y
-    var memOnly = false
 
     enum class Color {
         BLACK, WHITE
@@ -50,8 +47,7 @@ abstract class Piece(private val whiteTexture: Texture, private val blackTexture
             if (take != null) {
                 positions.add(take)
                 break
-            }
-            else positions.addValue(checkForMove(i, j, false))
+            } else positions.addValue(checkForMove(i, j, false))
             if (topX > i) i++
             if (topX < i) i--
             if (topY > j) j++
@@ -80,22 +76,36 @@ abstract class Piece(private val whiteTexture: Texture, private val blackTexture
 
     protected abstract fun getAllMoves(): GdxArray<Position>
 
-    private fun getAvailableMoves(): GdxArray<Position> = if (GameHandler.currentPlayer == color) getAllMoves() else GdxArray<Position>()
+    private fun getAvailableMoves(foresight: Boolean = true): GdxArray<Position> {
+        val positions = GdxArray<Position>()
+        if (GameHandler.currentPlayer == color) {
+            if (foresight) {
+                GameBoard.rendering = false
+                GameBoard.remove(this)
+                GameBoard.add(this.clone())
+                GameHandler.deleteMove()
+                getAllMoves().forEach {
+                    GameBoard.move(this.x, this.y, it.x, it.y, false)
+                    if (!GameBoard.checkForCheck(color)) positions.add(it)
+                    GameBoard.undo()
+                }
+                GameBoard.remove(GameBoard[this.x][this.y].piece!!)
+                GameBoard.add(this)
+                GameHandler.deleteMove()
+                GameBoard.rendering = true
+            } else return getAllMoves()
+        }
+        return positions
+    }
 
-    fun canMoveTo(x: Int, y: Int): Boolean {
-        getAvailableMoves().forEach {
+    fun canMoveTo(x: Int, y: Int, foresight: Boolean = true): Boolean {
+        getAvailableMoves(foresight).forEach {
             if (it?.x == x && it.y == y) return true
         }
         return false
     }
 
-    fun render(scale: Float, margin: Float) {
-        if (!memOnly) {
-            renderX = x
-            renderY = y
-        }
-        ChessGame.batch.draw(if (color == Color.WHITE) whiteTexture else blackTexture, (margin + renderX * scale) + draggedX, (margin + renderY * scale) + draggedY, scale, scale)
-    }
+    fun render(scale: Float, margin: Float) = ChessGame.batch.draw(if (color == Color.WHITE) whiteTexture else blackTexture, (margin + x * scale) + draggedX, (margin + y * scale) + draggedY, scale, scale)
 
     fun renderPrecise(x: Float, y: Float, scale: Float) {
         ChessGame.batch.draw(if (color == Color.WHITE) whiteTexture else blackTexture, x, y, scale, scale)
