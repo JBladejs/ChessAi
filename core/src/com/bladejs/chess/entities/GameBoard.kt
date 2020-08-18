@@ -7,7 +7,7 @@ import com.bladejs.chess.ChessGame
 import com.bladejs.chess.entities.pieces.*
 import com.bladejs.chess.entities.pieces.Piece.Color.BLACK
 import com.bladejs.chess.entities.pieces.Piece.Color.WHITE
-import com.bladejs.chess.entities.pieces.windows.PromotionWindow
+import com.bladejs.chess.entities.windows.PromotionWindow
 import com.bladejs.chess.handlers.GameHandler
 import com.bladejs.chess.misc.Move
 import com.bladejs.chess.misc.Position

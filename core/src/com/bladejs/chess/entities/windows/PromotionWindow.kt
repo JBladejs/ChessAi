@@ -1,8 +1,6 @@
-package com.bladejs.chess.entities.pieces.windows
+package com.bladejs.chess.entities.windows
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.graphics.Color
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.utils.Array
 import com.bladejs.chess.ChessGame
