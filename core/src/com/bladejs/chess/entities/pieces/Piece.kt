@@ -76,7 +76,7 @@ abstract class Piece(private val whiteTexture: Texture, private val blackTexture
 
     protected abstract fun getAllMoves(): GdxArray<Position>
 
-    private fun getAvailableMoves(foresight: Boolean = true): GdxArray<Position> {
+    fun getAvailableMoves(foresight: Boolean = true): GdxArray<Position> {
         val positions = GdxArray<Position>()
         if (GameHandler.currentPlayer == color) {
             if (foresight) {

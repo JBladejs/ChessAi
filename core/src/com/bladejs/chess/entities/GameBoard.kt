@@ -7,6 +7,7 @@ import com.bladejs.chess.ChessGame
 import com.bladejs.chess.entities.pieces.*
 import com.bladejs.chess.entities.pieces.Piece.Color.BLACK
 import com.bladejs.chess.entities.pieces.Piece.Color.WHITE
+import com.bladejs.chess.entities.windows.GameOverWindow
 import com.bladejs.chess.entities.windows.PromotionWindow
 import com.bladejs.chess.handlers.GameHandler
 import com.bladejs.chess.misc.Move
@@ -22,6 +23,7 @@ object GameBoard {
     private var doubleCellSize = cellSize * 2f
     private var quarterCellSize = halfCellSize / 2f
     val promotionWindow = PromotionWindow(cellSize)
+    var gameOverWindow: GameOverWindow? = null
     var rendering = true
 
     init {
@@ -73,6 +75,20 @@ object GameBoard {
             if (it.color != color && it.canMoveTo(king.x, king.y, false)) return true
         }
         return false
+    }
+
+    fun checkForMate() {
+        val kings = pieces.getKings()
+        for (king in kings) {
+            val pieceSet = pieces.getPieces(king.color)
+            pieceSet.forEach {
+                if (it.getAvailableMoves().size > 0) return
+            }
+            gameOverWindow = if (checkForCheck(king.color))
+                GameOverWindow(cellSize, if (king.color == WHITE) GameOverWindow.State.LOOSE else GameOverWindow.State.WIN)
+            else
+                GameOverWindow(cellSize, GameOverWindow.State.DRAW)
+        }
     }
 
     fun add(piece: Piece) {

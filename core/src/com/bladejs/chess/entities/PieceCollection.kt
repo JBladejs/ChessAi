@@ -1,5 +1,6 @@
 package com.bladejs.chess.entities
 
+import com.badlogic.gdx.Gdx
 import com.bladejs.chess.entities.pieces.King
 import com.bladejs.chess.entities.pieces.Piece
 import com.bladejs.chess.misc.remove
@@ -27,6 +28,13 @@ class PieceCollection: Iterable<Piece> {
         throw IllegalStateException("There is no King!!")
     }
 
+    fun getKings(): GdxArray<Piece> {
+        val kings = GdxArray<Piece>(2)
+        kings.add(getKing(Piece.Color.WHITE))
+        kings.add(getKing(Piece.Color.BLACK))
+        return kings
+    }
+
     override fun iterator(): Iterator<Piece> = PieceIterator(this)
 
     class PieceIterator(private val pieces: PieceCollection): Iterator<Piece> {
@@ -36,8 +44,7 @@ class PieceCollection: Iterable<Piece> {
 
         override fun next(): Piece {
             if (!hasNext()) throw IllegalStateException()
-            val collection = if (i < pieces.white.size) pieces.white else pieces.black
-            val nextPiece = collection[i]
+            val nextPiece = if (i < pieces.white.size) pieces.white[i] else pieces.black[i - pieces.white.size]
             i++
             return nextPiece
         }
