@@ -8,6 +8,7 @@ import com.badlogic.gdx.utils.Array as GdxArray
 
 class King(x: Int, y: Int, color: Color) : Piece(Texture("king.png"), Texture("kingB.png"), x, y, color) {
     //TODO: check that
+    //TODO: add checking for checks
     private fun checkForCastle(x: Int, y: Int): Position? {
         if (moveCount == 0) {
             if (x == 2) {

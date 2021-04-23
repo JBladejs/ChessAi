@@ -8,7 +8,7 @@ import com.bladejs.chess.misc.Position
 import com.bladejs.chess.misc.addValue
 import com.badlogic.gdx.utils.Array as GdxArray
 
-//TODO: fix this
+//TODO: generate available moves on the start of a turn
 
 abstract class Piece(private val whiteTexture: Texture, private val blackTexture: Texture, var x: Int, var y: Int, val color: Color) : Cloneable {
     var moveCount = 0
@@ -69,7 +69,7 @@ abstract class Piece(private val whiteTexture: Texture, private val blackTexture
     }
 
     protected fun checkDiagonalLinesForMoves(): GdxArray<Position> {
-        val positions = com.badlogic.gdx.utils.Array<Position>()
+        val positions = GdxArray<Position>()
         positions.addAll(searchLineForMoves(x + 1, 7, y + 1, 7, true))
         positions.addAll(searchLineForMoves(x - 1, 0, y - 1, 0, true))
         positions.addAll(searchLineForMoves(x + 1, 7, y - 1, 0, true))
@@ -79,6 +79,7 @@ abstract class Piece(private val whiteTexture: Texture, private val blackTexture
 
     protected abstract fun getAllMoves(): GdxArray<Position>
 
+    //TODO: refactor undoing and foresight
     fun getAvailableMoves(foresight: Boolean = true): GdxArray<Position> {
         val positions = GdxArray<Position>()
         if (GameHandler.currentPlayer == color) {
@@ -103,6 +104,7 @@ abstract class Piece(private val whiteTexture: Texture, private val blackTexture
         return positions
     }
 
+    //TODO: check if foresight argument can be removed
     fun canMoveTo(x: Int, y: Int, foresight: Boolean = true): Boolean {
         getAvailableMoves(foresight).forEach {
             if (it?.x == x && it.y == y) return true
@@ -110,6 +112,7 @@ abstract class Piece(private val whiteTexture: Texture, private val blackTexture
         return false
     }
 
+    //TODO: merge render methods
     fun render(scale: Float, margin: Float) = ChessGame.batch.draw(if (color == Color.WHITE) whiteTexture else blackTexture, (margin + x * scale) + draggedX, (margin + y * scale) + draggedY, scale, scale)
 
     fun renderPrecise(x: Float, y: Float, scale: Float) {
