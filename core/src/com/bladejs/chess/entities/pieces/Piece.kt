@@ -21,34 +21,36 @@ abstract class Piece(private val whiteTexture: Texture, private val blackTexture
 
     public override fun clone(): Piece = super.clone() as Piece
 
-    //TODO: try to change that to boolean
-    protected fun checkForMove(x: Int, y: Int, inclTakes: Boolean): Position? {
+    //TODO: change that to boolean
+    protected fun checkForMove(x: Int, y: Int, inclTakes: Boolean = true): Position? {
         if (x !in 0..7 || y !in 0..7) return null
         return if (GameBoard[x][y].isEmpty) Position(x, y)
         else if (inclTakes && color != GameBoard[x][y].piece!!.color) Position(x, y)
         else null
     }
 
+    //TODO: change that to boolean
     protected fun checkForTake(x: Int, y: Int): Position? {
         if (x !in 0..7 || y !in 0..7) return null
         return if (!GameBoard[x][y].isEmpty && color != GameBoard[x][y].piece!!.color) Position(x, y) else null
     }
 
+    //TODO: add in-function diagonal checking
     private fun searchLineForMoves(bottomX: Int, topX: Int, bottomY: Int, topY: Int, diagonal: Boolean = false): GdxArray<Position> {
         val positions = GdxArray<Position>()
         if (bottomX < 0 || bottomX > 7 || bottomY < 0 || bottomY > 7) return positions
         if (topX < 0 || topX > 7 || topY < 0 || topY > 7) return positions
         var i = bottomX
         var j = bottomY
-        var iter = 0
-        while (iter < 1) {
-            if (!diagonal && i == topX && j == topY) iter++
-            if (diagonal && (i == topX || j == topY)) iter++
-            val take = checkForTake(i, j)
-            if (take != null) {
-                positions.add(take)
-                break
-            } else positions.addValue(checkForMove(i, j, false))
+        while (true) {
+            if (!diagonal && i == topX && j == topY) break
+            if (diagonal && (i == topX || j == topY)) break
+            val position = checkForMove(i, j)
+            if (position != null) {
+                positions.add(position)
+                if (checkForTake(i, j) != null) break
+            }
+            else break
             if (topX > i) i++
             if (topX < i) i--
             if (topY > j) j++
