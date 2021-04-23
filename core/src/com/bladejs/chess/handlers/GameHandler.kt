@@ -33,7 +33,6 @@ object GameHandler {
     fun confirmMove() {
         moves.add(Move(currentMoveTypes.clone(), currentPositions.clone(), currentPieces.clone()))
         deleteMove()
-        GameBoard.checkForMate()
         changeCurrentPlayer()
     }
 

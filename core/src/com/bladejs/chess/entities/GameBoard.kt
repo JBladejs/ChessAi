@@ -72,23 +72,20 @@ object GameBoard {
     fun checkForCheck(color: Piece.Color): Boolean {
         val king = pieces.getKing(color)
         pieces.getPieces(if (color == WHITE) BLACK else WHITE).forEach {
-            if (it.color != color && it.canMoveTo(king.x, king.y, false)) return true
+            if (it.canMoveTo(king.x, king.y, false)) return true
         }
         return false
     }
 
     fun checkForMate() {
-        val kings = pieces.getKings()
-        for (king in kings) {
-            val pieceSet = pieces.getPieces(king.color)
-            pieceSet.forEach {
-                if (it.getAvailableMoves().size > 0) return
-            }
-            gameOverWindow = if (checkForCheck(king.color))
-                GameOverWindow(cellSize, if (king.color == WHITE) GameOverWindow.State.LOOSE else GameOverWindow.State.WIN)
-            else
-                GameOverWindow(cellSize, GameOverWindow.State.DRAW)
+        val pieceSet = pieces.getPieces(GameHandler.currentPlayer)
+        pieceSet.forEach {
+            if (it.getAvailableMoves().size > 0) return
         }
+        gameOverWindow = if (checkForCheck(GameHandler.currentPlayer))
+            GameOverWindow(cellSize, if (GameHandler.currentPlayer == WHITE) GameOverWindow.State.LOOSE else GameOverWindow.State.WIN)
+        else
+            GameOverWindow(cellSize, GameOverWindow.State.DRAW)
     }
 
     fun add(piece: Piece) {
@@ -136,6 +133,7 @@ object GameBoard {
             //Normal move
             forceMove(piece, x, y)
             GameHandler.confirmMove()
+            if (foresight) checkForMate()
         }
     }
 

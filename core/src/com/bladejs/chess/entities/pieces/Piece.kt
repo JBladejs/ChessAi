@@ -8,6 +8,8 @@ import com.bladejs.chess.misc.Position
 import com.bladejs.chess.misc.addValue
 import com.badlogic.gdx.utils.Array as GdxArray
 
+//TODO: fix this
+
 abstract class Piece(private val whiteTexture: Texture, private val blackTexture: Texture, var x: Int, var y: Int, val color: Color) : Cloneable {
     var moveCount = 0
     var draggedX = 0f
@@ -86,7 +88,9 @@ abstract class Piece(private val whiteTexture: Texture, private val blackTexture
                 GameHandler.deleteMove()
                 getAllMoves().forEach {
                     GameBoard.move(this.x, this.y, it.x, it.y, false)
-                    if (!GameBoard.checkForCheck(color)) positions.add(it)
+                    if (!GameBoard.checkForCheck(color)){
+                        positions.add(it)
+                    }
                     GameBoard.undo()
                 }
                 GameBoard.remove(GameBoard[this.x][this.y].piece!!)

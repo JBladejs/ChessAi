@@ -20,6 +20,10 @@ class GameOverWindow(private val cellSize: Float, private val state: State) : Wi
             State.DRAW -> "DRAW!"
             State.LOOSE -> "YOU LOOSE!"
         }
-        font.draw(ChessGame.batch, endText, (Gdx.graphics.width / 2f) - (2f * cellSize) - 5f, (Gdx.graphics.height / 2f) - (cellSize / 2f) - 5f)
+        with(ChessGame.batch) {
+            begin()
+            font.draw(ChessGame.batch, endText, (Gdx.graphics.width / 2f) - (2f * cellSize) - 5f, (Gdx.graphics.height / 2f) - (cellSize / 2f) - 5f)
+            end()
+        }
     }
 }
