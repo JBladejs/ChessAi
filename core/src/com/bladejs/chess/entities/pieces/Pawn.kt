@@ -9,6 +9,7 @@ import com.bladejs.chess.misc.addValue
 class Pawn(x: Int, y: Int, color: Color) : Piece(Texture("pawn.png"), Texture("pawnB.png"), x, y, color) {
     var movedTwoFields = false
 
+    //TODO: check that
     private fun checkForEnPassant(x: Int, y: Int): Position? {
         if (x !in 0..7 || y !in 0..7) return null
         if (!GameBoard[x][y].isTakable || GameBoard[x][y].piece!!.color == color) return null
