@@ -7,6 +7,4 @@ class BoardField {
     var piece: Piece? = null
     val isEmpty: Boolean
         get() = piece == null
-    val isTakable: Boolean
-        get() = !isEmpty
 }
