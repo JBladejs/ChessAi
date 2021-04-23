@@ -42,9 +42,10 @@ abstract class Piece(private val whiteTexture: Texture, private val blackTexture
         if (topX < 0 || topX > 7 || topY < 0 || topY > 7) return positions
         var i = bottomX
         var j = bottomY
-        while (true) {
-            if (!diagonal && i == topX && j == topY) break
-            if (diagonal && (i == topX || j == topY)) break
+        var end = false
+        while (!end) {
+            if (!diagonal && i == topX && j == topY) end = true
+            if (diagonal && (i == topX || j == topY)) end = true
             val position = checkForMove(i, j)
             if (position != null) {
                 positions.add(position)
