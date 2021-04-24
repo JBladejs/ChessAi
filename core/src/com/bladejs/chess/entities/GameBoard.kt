@@ -120,6 +120,7 @@ object GameBoard {
         piece.moveCount++
     }
 
+    //TODO: move that to GameHandler
     fun move(piece: Piece, x: Int, y: Int, foresight: Boolean = true) {
         if (piece.canMoveTo(x, y, foresight)) {
             if (piece is Pawn) {
@@ -152,6 +153,7 @@ object GameBoard {
         move(board[startX][startY].piece!!, endX, endY, foresight)
     }
 
+    //TODO: remove that
     fun undo() = GameHandler.undoMove()
 
     fun render() {
