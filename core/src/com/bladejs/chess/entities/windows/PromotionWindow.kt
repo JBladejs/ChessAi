@@ -4,21 +4,20 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.utils.Array
 import com.bladejs.chess.ChessGame
-import com.bladejs.chess.entities.GameBoard
 import com.bladejs.chess.entities.pieces.*
 import com.bladejs.chess.handlers.GameHandler
 import com.bladejs.chess.misc.Position
 
-class PromotionWindow(cellSize: Float): Window(cellSize) {
+class PromotionWindow(size: Float): Window(size) {
     private val promotionOptions = Array<Rectangle>(4)
     var promotion = false
     var promotionPosition = Position(0, 0)
 
     init {
-        promotionOptions.add(Rectangle((Gdx.graphics.width / 2f) - (2f * cellSize), (Gdx.graphics.height / 2f) - (cellSize / 2f), cellSize, cellSize))
-        promotionOptions.add(Rectangle((Gdx.graphics.width / 2f) - cellSize, (Gdx.graphics.height / 2f) - (cellSize / 2f), cellSize, cellSize))
-        promotionOptions.add(Rectangle((Gdx.graphics.width / 2f), (Gdx.graphics.height / 2f) - (cellSize / 2f), cellSize, cellSize))
-        promotionOptions.add(Rectangle((Gdx.graphics.width / 2) + cellSize, (Gdx.graphics.height / 2) - (cellSize / 2f), cellSize, cellSize))
+        promotionOptions.add(Rectangle((Gdx.graphics.width / 2f) - (2f * size), (Gdx.graphics.height / 2f) - (size / 2f), size, size))
+        promotionOptions.add(Rectangle((Gdx.graphics.width / 2f) - size, (Gdx.graphics.height / 2f) - (size / 2f), size, size))
+        promotionOptions.add(Rectangle((Gdx.graphics.width / 2f), (Gdx.graphics.height / 2f) - (size / 2f), size, size))
+        promotionOptions.add(Rectangle((Gdx.graphics.width / 2) + size, (Gdx.graphics.height / 2) - (size / 2f), size, size))
     }
 
     private enum class PromotionPiece {

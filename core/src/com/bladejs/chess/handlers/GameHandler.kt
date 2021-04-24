@@ -1,13 +1,16 @@
 package com.bladejs.chess.handlers
 
+import com.badlogic.gdx.Gdx
 import com.bladejs.chess.entities.GameBoard
 import com.bladejs.chess.entities.pieces.King
 import com.bladejs.chess.entities.pieces.Pawn
 import com.bladejs.chess.entities.pieces.Piece
+import com.bladejs.chess.entities.windows.GameOverWindow
 import com.bladejs.chess.misc.Move
 import com.bladejs.chess.misc.Position
 import kotlin.math.abs
 
+//TODO: add board generation here
 object GameHandler {
     var currentPlayer = Piece.Color.WHITE
 
@@ -60,13 +63,33 @@ object GameHandler {
             //Normal move
             forceMove(piece, x, y)
             MoveHandler.confirmMove()
-            if (foresight) GameBoard.checkForMate()
+            if (foresight) checkForMate()
         }
     }
 
     fun move(startX: Int, startY: Int, endX: Int, endY: Int, foresight: Boolean = true) {
         if (GameBoard[startX][startY].isEmpty) return
         move(GameBoard[startX][startY].piece!!, endX, endY, foresight)
+    }
+
+    fun checkForCheck(color: Piece.Color): Boolean {
+        val king = GameBoard.pieces.getKing(color)
+        //move to another function
+        GameBoard.pieces.getPieces(if (color == Piece.Color.WHITE) Piece.Color.BLACK else Piece.Color.WHITE).forEach {
+            if (it.canMoveTo(king.x, king.y, foresight = false, ignoreTurn = true)) return true
+        }
+        return false
+    }
+
+    fun checkForMate() {
+        val pieceSet = GameBoard.pieces.getPieces(currentPlayer)
+        pieceSet.forEach {
+            if (it.getAvailableMoves().size > 0) return
+        }
+        GameBoard.gameOverWindow = if (checkForCheck(currentPlayer))
+            GameOverWindow(Gdx.graphics.height * 0.11111f, if (currentPlayer == Piece.Color.WHITE) GameOverWindow.State.LOOSE else GameOverWindow.State.WIN)
+        else
+            GameOverWindow(Gdx.graphics.height * 0.11111f, GameOverWindow.State.DRAW)
     }
 
     fun undo() = MoveHandler.undoMove()

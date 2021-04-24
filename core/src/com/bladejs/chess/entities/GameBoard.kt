@@ -15,6 +15,7 @@ import com.bladejs.chess.misc.Position
 import kotlin.math.abs
 import com.badlogic.gdx.utils.Array as GdxArray
 
+//TODO: change to class
 object GameBoard {
     private val board = GdxArray<GdxArray<BoardField>>(8)
     val pieces = PieceCollection()
@@ -77,26 +78,6 @@ object GameBoard {
         return Position(i, j)
     }
 
-    fun checkForCheck(color: Piece.Color): Boolean {
-        val king = pieces.getKing(color)
-        //move to another function
-        pieces.getPieces(if (color == WHITE) BLACK else WHITE).forEach {
-            if (it.canMoveTo(king.x, king.y, foresight = false, ignoreTurn = true)) return true
-        }
-        return false
-    }
-
-    fun checkForMate() {
-        val pieceSet = pieces.getPieces(GameHandler.currentPlayer)
-        pieceSet.forEach {
-            if (it.getAvailableMoves().size > 0) return
-        }
-        gameOverWindow = if (checkForCheck(GameHandler.currentPlayer))
-            GameOverWindow(cellSize, if (GameHandler.currentPlayer == WHITE) GameOverWindow.State.LOOSE else GameOverWindow.State.WIN)
-        else
-            GameOverWindow(cellSize, GameOverWindow.State.DRAW)
-    }
-
     fun add(piece: Piece) {
         pieces.add(piece)
         board[piece.x][piece.y].piece = piece
@@ -108,11 +89,11 @@ object GameBoard {
     }
 
     fun render() {
-        cellSize = Gdx.graphics.height * 0.111111f
-        invCellSize = 9f / Gdx.graphics.height
-        halfCellSize = cellSize * 0.5f
-        doubleCellSize = cellSize * 2f
-        quarterCellSize = halfCellSize * 0.5f
+//        cellSize = Gdx.graphics.height * 0.111111f
+//        invCellSize = 9f / Gdx.graphics.height
+//        halfCellSize = cellSize * 0.5f
+//        doubleCellSize = cellSize * 2f
+//        quarterCellSize = halfCellSize * 0.5f
         with(ChessGame.renderer) {
             begin(ShapeRenderer.ShapeType.Filled)
             color.set(Color.BROWN)

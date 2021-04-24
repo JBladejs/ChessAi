@@ -90,7 +90,7 @@ abstract class Piece(private val whiteTexture: Texture, private val blackTexture
                 GameBoard.add(this.clone())
                 getAllMoves().forEach {
                     GameHandler.move(this.x, this.y, it.x, it.y, false)
-                    if (!GameBoard.checkForCheck(color)){
+                    if (!GameHandler.checkForCheck(color)){
                         positions.add(it)
                     }
                     GameHandler.undo()

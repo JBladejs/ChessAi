@@ -7,7 +7,7 @@ import com.bladejs.chess.ChessGame
 
 //TODO: fix text location
 //TODO: fix flashing (make window appear after rendering the whole move)
-class GameOverWindow(private val cellSize: Float, private val state: State) : Window(cellSize) {
+class GameOverWindow(private val size: Float, private val state: State) : Window(size) {
     private val font = BitmapFont()
 
     enum class State {
@@ -24,7 +24,7 @@ class GameOverWindow(private val cellSize: Float, private val state: State) : Wi
         }
         with(ChessGame.batch) {
             begin()
-            font.draw(ChessGame.batch, endText, (Gdx.graphics.width / 2f) - (2f * cellSize) - 5f, (Gdx.graphics.height / 2f) - (cellSize / 2f) - 5f)
+            font.draw(ChessGame.batch, endText, (Gdx.graphics.width / 2f) - (2f * size) - 5f, (Gdx.graphics.height / 2f) - (size / 2f) - 5f)
             end()
         }
     }
