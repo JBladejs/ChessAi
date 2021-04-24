@@ -18,17 +18,18 @@ import com.badlogic.gdx.utils.Array as GdxArray
 object GameBoard {
     private val board = GdxArray<GdxArray<BoardField>>(8)
     val pieces = PieceCollection()
-    private var cellSize = Gdx.graphics.height / 9f
-    private var halfCellSize = cellSize / 2f
-    private var doubleCellSize = cellSize * 2f
-    private var quarterCellSize = halfCellSize / 2f
+    private var cellSize = Gdx.graphics.height * 0.111111f // height / 9
+    private var invCellSize = 9f / Gdx.graphics.height // cell size ^ -1
+    private var halfCellSize = cellSize * 0.5f // cell size / 2
+    private var doubleCellSize = cellSize * 2f // cell size * 2
+    private var quarterCellSize = halfCellSize * 0.5f // cell size / 4
     val promotionWindow = PromotionWindow(cellSize)
     var gameOverWindow: GameOverWindow? = null
     var rendering = true
 
-    init {
+    fun reset() {
         for (i in 0..7) {
-            board.add(GdxArray<BoardField>(8))
+            board.add(GdxArray(8))
             for (j in 0..7) {
                 board[i].add(BoardField())
             }
@@ -54,7 +55,13 @@ object GameBoard {
         GameHandler.deleteMove()
     }
 
+    init {
+        reset()
+    }
+
     operator fun get(i: Int): GdxArray<BoardField> = board[i]
+
+    operator fun get(i: Int, j: Int): BoardField = board[i][j]
 
     operator fun set(i: Int, j: Int, piece: Piece?) {
         val oldPiece = board[i][j].piece
@@ -64,15 +71,18 @@ object GameBoard {
 
     fun getFieldAt(x: Float, y: Float): Position {
         if (x < halfCellSize || y < halfCellSize) return Position(-1, -1)
-        val i = ((x - halfCellSize) / cellSize).toInt()
-        val j = ((y - halfCellSize) / cellSize).toInt()
+//        val i = ((x - halfCellSize) / cellSize).toInt()
+//        val j = ((y - halfCellSize) / cellSize).toInt()
+        val i = ((x - halfCellSize) * invCellSize).toInt()
+        val j = ((y - halfCellSize) * invCellSize).toInt()
         return Position(i, j)
     }
 
     fun checkForCheck(color: Piece.Color): Boolean {
         val king = pieces.getKing(color)
+        //move to another function
         pieces.getPieces(if (color == WHITE) BLACK else WHITE).forEach {
-            if (it.canMoveTo(king.x, king.y, false)) return true
+            if (it.canMoveTo(king.x, king.y, foresight = false, ignoreTurn = true)) return true
         }
         return false
     }
@@ -145,10 +155,11 @@ object GameBoard {
     fun undo() = GameHandler.undoMove()
 
     fun render() {
-        cellSize = Gdx.graphics.height / 9f
-        halfCellSize = cellSize / 2f
+        cellSize = Gdx.graphics.height * 0.111111f
+        invCellSize = 9f / Gdx.graphics.height
+        halfCellSize = cellSize * 0.5f
         doubleCellSize = cellSize * 2f
-        quarterCellSize = halfCellSize / 2f
+        quarterCellSize = halfCellSize * 0.5f
         with(ChessGame.renderer) {
             begin(ShapeRenderer.ShapeType.Filled)
             color.set(Color.BROWN)

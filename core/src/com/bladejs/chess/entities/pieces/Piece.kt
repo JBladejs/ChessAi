@@ -9,7 +9,8 @@ import com.bladejs.chess.misc.addValue
 import com.badlogic.gdx.utils.Array as GdxArray
 
 //TODO: generate available moves on the start of a turn
-
+//TODO: implement move highlighting
+//TODO: refactor this
 abstract class Piece(private val whiteTexture: Texture, private val blackTexture: Texture, var x: Int, var y: Int, val color: Color) : Cloneable {
     var moveCount = 0
     var draggedX = 0f
@@ -80,9 +81,9 @@ abstract class Piece(private val whiteTexture: Texture, private val blackTexture
     protected abstract fun getAllMoves(): GdxArray<Position>
 
     //TODO: refactor undoing and foresight
-    fun getAvailableMoves(foresight: Boolean = true): GdxArray<Position> {
+    fun getAvailableMoves(foresight: Boolean = true, ignoreTurn: Boolean = false): GdxArray<Position> {
         val positions = GdxArray<Position>()
-        if (GameHandler.currentPlayer == color) {
+        if (ignoreTurn || GameHandler.currentPlayer == color) {
             if (foresight) {
                 GameBoard.rendering = false
                 GameBoard.remove(this)
@@ -104,9 +105,8 @@ abstract class Piece(private val whiteTexture: Texture, private val blackTexture
         return positions
     }
 
-    //TODO: check if foresight argument can be removed
-    fun canMoveTo(x: Int, y: Int, foresight: Boolean = true): Boolean {
-        getAvailableMoves(foresight).forEach {
+    fun canMoveTo(x: Int, y: Int, foresight: Boolean = true, ignoreTurn: Boolean = false): Boolean {
+        getAvailableMoves(foresight, ignoreTurn).forEach {
             if (it?.x == x && it.y == y) return true
         }
         return false

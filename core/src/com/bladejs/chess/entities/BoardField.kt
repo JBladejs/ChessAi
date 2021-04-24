@@ -1,6 +1,5 @@
 package com.bladejs.chess.entities
 
-import com.bladejs.chess.entities.pieces.King
 import com.bladejs.chess.entities.pieces.Piece
 
 class BoardField {
