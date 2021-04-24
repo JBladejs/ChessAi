@@ -88,17 +88,15 @@ abstract class Piece(private val whiteTexture: Texture, private val blackTexture
                 GameBoard.rendering = false
                 GameBoard.remove(this)
                 GameBoard.add(this.clone())
-                GameHandler.deleteMove()
                 getAllMoves().forEach {
-                    GameBoard.move(this.x, this.y, it.x, it.y, false)
+                    GameHandler.move(this.x, this.y, it.x, it.y, false)
                     if (!GameBoard.checkForCheck(color)){
                         positions.add(it)
                     }
-                    GameBoard.undo()
+                    GameHandler.undo()
                 }
                 GameBoard.remove(GameBoard[this.x][this.y].piece!!)
                 GameBoard.add(this)
-                GameHandler.deleteMove()
                 GameBoard.rendering = true
             } else return getAllMoves()
         }

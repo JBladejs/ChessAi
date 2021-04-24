@@ -33,13 +33,13 @@ class PromotionWindow(cellSize: Float): Window(cellSize) {
     private fun promote(piece: PromotionPiece) {
         val color = if (promotionPosition.y == 7) Piece.Color.WHITE else Piece.Color.BLACK
         when (piece) {
-            PromotionPiece.QUEEN -> GameBoard.add(Queen(promotionPosition.x, promotionPosition.y, color))
-            PromotionPiece.KNIGHT -> GameBoard.add(Knight(promotionPosition.x, promotionPosition.y, color))
-            PromotionPiece.ROOK -> GameBoard.add(Rook(promotionPosition.x, promotionPosition.y, color))
-            PromotionPiece.BISHOP -> GameBoard.add(Bishop(promotionPosition.x, promotionPosition.y, color))
+            PromotionPiece.QUEEN -> GameHandler.addPiece(Queen(promotionPosition.x, promotionPosition.y, color))
+            PromotionPiece.KNIGHT -> GameHandler.addPiece(Knight(promotionPosition.x, promotionPosition.y, color))
+            PromotionPiece.ROOK -> GameHandler.addPiece(Rook(promotionPosition.x, promotionPosition.y, color))
+            PromotionPiece.BISHOP -> GameHandler.addPiece(Bishop(promotionPosition.x, promotionPosition.y, color))
         }
         promotion = false
-        GameHandler.confirmMove()
+        GameHandler.endMove()
     }
 
     fun handlePromotionMenuInput(mouseX: Float, mouseY: Float) {

@@ -15,7 +15,7 @@ object InputHandler : InputProcessor {
 
     override fun keyUp(keycode: Int): Boolean {
         if (GameBoard.promotionWindow.promotion) return false
-        if (keycode == Keys.U) GameBoard.undo()
+        if (keycode == Keys.U) GameHandler.undo()
         return true
     }
 
@@ -56,7 +56,7 @@ object InputHandler : InputProcessor {
             piece.draggedY = 0f
             val position = GameBoard.getFieldAt(mousePos.x, mousePos.y)
             if (position.x < 8 && position.y < 8 && position.x >= 0 && position.y >= 0)
-                GameBoard.move(piece, position.x, position.y)
+                GameHandler.move(piece, position.x, position.y)
         }
         return true
     }
