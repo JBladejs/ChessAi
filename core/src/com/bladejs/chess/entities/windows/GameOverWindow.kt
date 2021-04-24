@@ -5,6 +5,8 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.bladejs.chess.ChessGame
 
+//TODO: fix text location
+//TODO: fix flashing (make window appear after rendering the whole move)
 class GameOverWindow(private val cellSize: Float, private val state: State) : Window(cellSize) {
     private val font = BitmapFont()
 
