@@ -45,6 +45,7 @@ object InputHandler : InputProcessor {
         return true
     }
 
+    //TODO: reconfigure that to piece's center
     override fun touchUp(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
         if (GameBoard.promotionWindow.promotion) return false
         camera.unproject(mousePos.set(screenX.toFloat(), screenY.toFloat(), 0f))
