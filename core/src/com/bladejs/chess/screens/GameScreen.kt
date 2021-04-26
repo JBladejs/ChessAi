@@ -5,11 +5,16 @@ import com.badlogic.gdx.Screen
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.bladejs.chess.entities.GameBoard
+import com.bladejs.chess.handlers.GameHandler
 import com.bladejs.chess.misc.IntColor
 
 class GameScreen(private val camera: OrthographicCamera) : Screen {
     private val board = GameBoard
     private val background = IntColor(27, 94, 20, 255)
+
+    init {
+        GameHandler.generateMoves()
+    }
 
     override fun render(delta: Float) {
         if (!GameBoard.rendering){

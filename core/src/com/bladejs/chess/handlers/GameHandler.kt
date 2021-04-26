@@ -99,4 +99,8 @@ object GameHandler {
         else
             GameOverWindow(Gdx.graphics.height * 0.11111f, GameOverWindow.State.DRAW)
     }
+
+    fun generateMoves() {
+        TODO("Not yet implemented")
+    }
 }
