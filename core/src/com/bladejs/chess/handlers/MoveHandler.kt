@@ -47,6 +47,5 @@ object MoveHandler {
         }
         moves.removeIndex(moves.size - 1)
         deleteMove()
-        GameHandler.changeCurrentPlayer()
     }
 }

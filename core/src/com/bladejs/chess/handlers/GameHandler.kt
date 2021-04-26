@@ -28,7 +28,15 @@ object GameHandler {
         MoveHandler.appendToMove(Move.Type.REMOVE, Position(piece.x, piece.y), piece.clone())
     }
 
-    fun endMove() = MoveHandler.confirmMove()
+    fun endMove() {
+        MoveHandler.confirmMove()
+        changeCurrentPlayer()
+    }
+
+    fun undo() {
+        MoveHandler.undoMove()
+        changeCurrentPlayer()
+    }
 
     private fun forceMove(piece: Piece, x: Int, y: Int) {
         val takenPiece = GameBoard[x][y].piece
@@ -91,6 +99,4 @@ object GameHandler {
         else
             GameOverWindow(Gdx.graphics.height * 0.11111f, GameOverWindow.State.DRAW)
     }
-
-    fun undo() = MoveHandler.undoMove()
 }
