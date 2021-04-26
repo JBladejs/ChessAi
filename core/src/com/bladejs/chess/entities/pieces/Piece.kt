@@ -15,6 +15,7 @@ abstract class Piece(private val whiteTexture: Texture, private val blackTexture
     var moveCount = 0
     var draggedX = 0f
     var draggedY = 0f
+    val availableMoves = GdxArray<Position>()
 
     enum class Color {
         BLACK, WHITE
@@ -101,6 +102,11 @@ abstract class Piece(private val whiteTexture: Texture, private val blackTexture
             } else return getAllMoves()
         }
         return positions
+    }
+
+    fun generateAvailableMoves() {
+        availableMoves.clear()
+        availableMoves.addAll(getAvailableMoves())
     }
 
     fun canMoveTo(x: Int, y: Int, foresight: Boolean = true, ignoreTurn: Boolean = false): Boolean {
