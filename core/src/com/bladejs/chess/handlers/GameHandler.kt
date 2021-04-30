@@ -48,8 +48,8 @@ object GameHandler {
         piece.moveCount++
     }
 
-    fun move(piece: Piece, x: Int, y: Int, foresight: Boolean = true) {
-        if (piece.canMoveTo(x, y, foresight)) {
+    fun move(piece: Piece, x: Int, y: Int, foresight: Boolean = true, list: Boolean = false) {
+        if (piece.canMoveTo(x, y, list, foresight)) {
             if (piece is Pawn) {
                 //Pawn moving two fields
                 if (abs(y - piece.y) > 1) piece.movedTwoFields = true
@@ -98,9 +98,5 @@ object GameHandler {
             GameOverWindow(Gdx.graphics.height * 0.11111f, if (currentPlayer == Piece.Color.WHITE) GameOverWindow.State.LOOSE else GameOverWindow.State.WIN)
         else
             GameOverWindow(Gdx.graphics.height * 0.11111f, GameOverWindow.State.DRAW)
-    }
-
-    fun generateMoves() {
-        TODO("Not yet implemented")
     }
 }

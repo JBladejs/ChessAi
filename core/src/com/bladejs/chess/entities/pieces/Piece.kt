@@ -1,9 +1,11 @@
 package com.bladejs.chess.entities.pieces
 
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Texture
 import com.bladejs.chess.ChessGame
 import com.bladejs.chess.entities.GameBoard
 import com.bladejs.chess.handlers.GameHandler
+import com.bladejs.chess.misc.IntColor
 import com.bladejs.chess.misc.Position
 import com.bladejs.chess.misc.addValue
 import com.badlogic.gdx.utils.Array as GdxArray
@@ -15,6 +17,7 @@ abstract class Piece(private val whiteTexture: Texture, private val blackTexture
     var moveCount = 0
     var draggedX = 0f
     var draggedY = 0f
+    val availableMoves = GdxArray<Position>()
 
     enum class Color {
         BLACK, WHITE
@@ -103,8 +106,15 @@ abstract class Piece(private val whiteTexture: Texture, private val blackTexture
         return positions
     }
 
-    fun canMoveTo(x: Int, y: Int, foresight: Boolean = true, ignoreTurn: Boolean = false): Boolean {
-        getAvailableMoves(foresight, ignoreTurn).forEach {
+    fun generateAvailableMoves() {
+        availableMoves.clear()
+        availableMoves.addAll(getAvailableMoves())
+    }
+
+    //TODO: try to remove list argument
+    fun canMoveTo(x: Int, y: Int, list: Boolean = false, foresight: Boolean = true, ignoreTurn: Boolean = false): Boolean {
+        val moves = if (list) availableMoves else getAvailableMoves(foresight, ignoreTurn)
+        moves.forEach {
             if (it?.x == x && it.y == y) return true
         }
         return false

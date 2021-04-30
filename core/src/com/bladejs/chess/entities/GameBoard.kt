@@ -9,10 +9,7 @@ import com.bladejs.chess.entities.pieces.Piece.Color.BLACK
 import com.bladejs.chess.entities.pieces.Piece.Color.WHITE
 import com.bladejs.chess.entities.windows.GameOverWindow
 import com.bladejs.chess.entities.windows.PromotionWindow
-import com.bladejs.chess.handlers.GameHandler
-import com.bladejs.chess.misc.Move
 import com.bladejs.chess.misc.Position
-import kotlin.math.abs
 import com.badlogic.gdx.utils.Array as GdxArray
 
 //TODO: change to class
@@ -88,6 +85,20 @@ object GameBoard {
         board[piece.x][piece.y].piece = null
     }
 
+    fun highlight(fields: GdxArray<Position>) {
+        fields.forEach {
+            board[it.x][it.y].isHighlighted = true
+        }
+    }
+
+    fun deHighlight() {
+        board.forEach { row ->
+            row.forEach {
+                it.isHighlighted = false
+            }
+        }
+    }
+
     fun render() {
 //        cellSize = Gdx.graphics.height * 0.111111f
 //        invCellSize = 9f / Gdx.graphics.height
@@ -106,6 +117,12 @@ object GameBoard {
                 for (j in 0..3) {
                     val start = if (i % 2 == 0) cellSize + halfCellSize else halfCellSize
                     rect(start + (j * doubleCellSize), halfCellSize + (i * cellSize), cellSize, cellSize)
+                }
+            }
+            color.set(0f, 0f, 1f, 0.5f)
+            for (i in 0..7) {
+                for (j in 0..7) {
+                    if (board[i][j].isHighlighted) rect((halfCellSize + i * cellSize), (halfCellSize + j * cellSize), cellSize, cellSize)
                 }
             }
             end()

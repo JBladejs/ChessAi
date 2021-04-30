@@ -6,4 +6,5 @@ class BoardField {
     var piece: Piece? = null
     val isEmpty: Boolean
         get() = piece == null
+    var isHighlighted: Boolean = false
 }

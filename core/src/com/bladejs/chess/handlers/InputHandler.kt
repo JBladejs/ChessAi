@@ -25,7 +25,11 @@ object InputHandler : InputProcessor {
             val position = GameBoard.getFieldAt(mousePos.x, mousePos.y)
             if (position.x < 8 && position.y < 8 && position.x >= 0 && position.y >= 0) {
                 val field = GameBoard[position.x][position.y]
-                if (!field.isEmpty) draggedPiece = field.piece
+                if (!field.isEmpty) {
+                    draggedPiece = field.piece
+                    draggedPiece!!.generateAvailableMoves()
+                    GameBoard.highlight(draggedPiece!!.availableMoves)
+                }
                 startingMousePos = mousePos.cpy()
             }
         } else {
@@ -47,6 +51,7 @@ object InputHandler : InputProcessor {
 
     //TODO: reconfigure that to piece's center
     override fun touchUp(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
+        GameBoard.deHighlight()
         if (GameBoard.promotionWindow.promotion) return false
         camera.unproject(mousePos.set(screenX.toFloat(), screenY.toFloat(), 0f))
         val piece = draggedPiece
@@ -56,7 +61,8 @@ object InputHandler : InputProcessor {
             piece.draggedY = 0f
             val position = GameBoard.getFieldAt(mousePos.x, mousePos.y)
             if (position.x < 8 && position.y < 8 && position.x >= 0 && position.y >= 0)
-                GameHandler.move(piece, position.x, position.y)
+                //TODO: try to remove list argument
+                GameHandler.move(piece, position.x, position.y, list = true)
         }
         return true
     }
