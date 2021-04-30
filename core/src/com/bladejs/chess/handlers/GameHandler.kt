@@ -101,8 +101,6 @@ object GameHandler {
     }
 
     fun generateMoves() {
-        GameBoard.pieces.forEach {
-            it.generateAvailableMoves()
-        }
+        TODO("Not yet implemented")
     }
 }
