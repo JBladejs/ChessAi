@@ -2,6 +2,7 @@ package com.bladejs.chess.entities
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.bladejs.chess.ChessGame
 import com.bladejs.chess.entities.pieces.*
@@ -120,11 +121,6 @@ object GameBoard {
                 }
             }
             color.set(0f, 0f, 1f, 0.5f)
-            for (i in 0..7) {
-                for (j in 0..7) {
-                    if (board[i][j].isHighlighted) rect((halfCellSize + i * cellSize), (halfCellSize + j * cellSize), cellSize, cellSize)
-                }
-            }
             end()
         }
         with(ChessGame.batch) {
@@ -144,5 +140,18 @@ object GameBoard {
             }
             end()
         }
+        Gdx.gl.glEnable(GL20.GL_BLEND)
+        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA)
+        with(ChessGame.renderer) {
+            begin(ShapeRenderer.ShapeType.Filled)
+            color.set(0f, 0f, 1f, 0.5f)
+            for (i in 0..7) {
+                for (j in 0..7) {
+                    if (board[i][j].isHighlighted) rect((halfCellSize + i * cellSize), (halfCellSize + j * cellSize), cellSize, cellSize)
+                }
+            }
+            end()
+        }
+        Gdx.gl.glDisable(GL20.GL_BLEND)
     }
 }
