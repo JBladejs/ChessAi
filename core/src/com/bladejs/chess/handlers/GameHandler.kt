@@ -33,6 +33,7 @@ object GameHandler {
         changeCurrentPlayer()
     }
 
+    //TODO: fix undoing move 0
     fun undo() {
         MoveHandler.undoMove()
         changeCurrentPlayer()
