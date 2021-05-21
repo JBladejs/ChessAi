@@ -27,7 +27,7 @@ object InputHandler : InputProcessor {
                 val field = GameBoard[position.x][position.y]
                 if (!field.isEmpty) {
                     draggedPiece = field.piece
-                    draggedPiece!!.generateAvailableMoves()
+//                    draggedPiece!!.generateAvailableMoves()
                     GameBoard.highlight(draggedPiece!!.availableMoves)
                 }
                 startingMousePos = mousePos.cpy()

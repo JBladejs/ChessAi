@@ -111,6 +111,7 @@ abstract class Piece(private val whiteTexture: Texture, private val blackTexture
         availableMoves.addAll(getAvailableMoves())
     }
 
+    //TODO: remove piece color checking for greater code readability
     //TODO: try to remove list argument
     fun canMoveTo(x: Int, y: Int, list: Boolean = false, foresight: Boolean = true, ignoreTurn: Boolean = false): Boolean {
         val moves = if (list) availableMoves else getAvailableMoves(foresight, ignoreTurn)

@@ -10,6 +10,7 @@ import com.bladejs.chess.entities.pieces.Piece.Color.BLACK
 import com.bladejs.chess.entities.pieces.Piece.Color.WHITE
 import com.bladejs.chess.entities.windows.GameOverWindow
 import com.bladejs.chess.entities.windows.PromotionWindow
+import com.bladejs.chess.handlers.GameHandler
 import com.bladejs.chess.misc.Position
 import com.badlogic.gdx.utils.Array as GdxArray
 
@@ -52,6 +53,7 @@ object GameBoard {
         add(Bishop(5, 7, BLACK))
         add(Knight(1, 7, BLACK))
         add(Knight(6, 7, BLACK))
+        GameHandler.generateAvailableMoves()
     }
 
     init {

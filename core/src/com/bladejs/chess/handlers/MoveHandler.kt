@@ -35,7 +35,6 @@ object MoveHandler {
     internal fun confirmMove() {
         moves.add(Move(currentMoveTypes.clone(), currentPositions.clone(), currentPieces.clone()))
         deleteMove()
-        GameHandler.changeCurrentPlayer()
     }
 
     internal fun undoMove(): Boolean {

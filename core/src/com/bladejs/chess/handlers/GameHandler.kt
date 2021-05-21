@@ -1,6 +1,8 @@
 package com.bladejs.chess.handlers
 
+import com.badlogic.gdx.Game
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.utils.Array
 import com.bladejs.chess.entities.GameBoard
 import com.bladejs.chess.entities.pieces.King
 import com.bladejs.chess.entities.pieces.Pawn
@@ -31,6 +33,7 @@ object GameHandler {
     fun endMove() {
         MoveHandler.confirmMove()
         changeCurrentPlayer()
+        generateAvailableMoves()
     }
 
     fun undo() {
@@ -70,7 +73,11 @@ object GameHandler {
             //Normal move
             forceMove(piece, x, y)
             MoveHandler.confirmMove()
-            if (foresight) checkForMate()
+            changeCurrentPlayer()
+            if (foresight) {
+                checkForMate()
+                generateAvailableMoves()
+            }
         }
     }
 
@@ -97,5 +104,18 @@ object GameHandler {
             GameOverWindow(Gdx.graphics.height * 0.11111f, if (currentPlayer == Piece.Color.WHITE) GameOverWindow.State.LOOSE else GameOverWindow.State.WIN)
         else
             GameOverWindow(Gdx.graphics.height * 0.11111f, GameOverWindow.State.DRAW)
+    }
+
+    fun generateAvailableMoves() {
+//        GameBoard.pieces.forEach {
+//            it.generateAvailableMoves()
+//            println("${it.color} ${it.javaClass.simpleName} ${it.x}-${it.y}")
+//        }
+        val pieces = Array<Piece>()
+        pieces.addAll(GameBoard.pieces.getPieces(Piece.Color.WHITE))
+        pieces.addAll(GameBoard.pieces.getPieces(Piece.Color.BLACK))
+        pieces.forEach {
+            it.generateAvailableMoves()
+        }
     }
 }
