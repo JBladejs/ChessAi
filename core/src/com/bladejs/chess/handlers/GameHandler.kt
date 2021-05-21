@@ -33,10 +33,8 @@ object GameHandler {
         changeCurrentPlayer()
     }
 
-    //TODO: fix undoing move 0
     fun undo() {
-        MoveHandler.undoMove()
-        changeCurrentPlayer()
+        if (MoveHandler.undoMove()) changeCurrentPlayer()
     }
 
     private fun forceMove(piece: Piece, x: Int, y: Int) {

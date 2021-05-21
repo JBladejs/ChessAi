@@ -38,8 +38,8 @@ object MoveHandler {
         GameHandler.changeCurrentPlayer()
     }
 
-    internal fun undoMove() {
-        if (moves.size == 0) return
+    internal fun undoMove(): Boolean {
+        if (moves.size == 0) return false
         val lastMove = moves[moves.size - 1]
         for (i in lastMove.types.size - 1 downTo 0) {
             if (lastMove.types[i] == Move.Type.ADD) GameBoard.remove(GameBoard[lastMove.positions[i].x][lastMove.positions[i].y].piece!!)
@@ -47,5 +47,6 @@ object MoveHandler {
         }
         moves.removeIndex(moves.size - 1)
         deleteMove()
+        return true
     }
 }
