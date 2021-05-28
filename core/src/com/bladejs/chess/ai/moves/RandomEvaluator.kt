@@ -8,12 +8,7 @@ import kotlin.random.Random
 
 class RandomEvaluator: MoveEvaluator {
     override fun getBestMove(): MoveNode {
-        val moves = Array<MoveNode>()
-        GameBoard.pieces.getPieces(GameHandler.currentPlayer).forEach { piece ->
-            piece.availableMoves.forEach { move ->
-                moves.add(MoveNode(0,piece,move.x,move.y))
-            }
-        }
+        val moves = getAvailableMoves(0)
         return moves[Random.nextInt(moves.size)]
     }
 

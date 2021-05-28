@@ -93,9 +93,9 @@ object GameHandler {
         }
     }
 
-    fun move(startX: Int, startY: Int, endX: Int, endY: Int, foresight: Boolean = true) {
+    fun move(startX: Int, startY: Int, endX: Int, endY: Int, foresight: Boolean = true, list: Boolean = false) {
         if (GameBoard[startX][startY].isEmpty) return
-        move(GameBoard[startX][startY].piece!!, endX, endY, foresight)
+        move(GameBoard[startX][startY].piece!!, endX, endY, foresight, list)
     }
 
     fun checkForCheck(color: Piece.Color): Boolean {
