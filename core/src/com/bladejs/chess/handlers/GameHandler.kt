@@ -3,6 +3,7 @@ package com.bladejs.chess.handlers
 import com.badlogic.gdx.Game
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.utils.Array
+import com.bladejs.chess.ai.AiPlayer
 import com.bladejs.chess.entities.GameBoard
 import com.bladejs.chess.entities.pieces.King
 import com.bladejs.chess.entities.pieces.Pawn
@@ -14,11 +15,15 @@ import kotlin.math.abs
 
 //TODO: add board generation here
 object GameHandler {
-    var AiEnabled = true
+    var aiEnabled = true
     var currentPlayer = Piece.Color.WHITE
 
     internal fun changeCurrentPlayer() {
         currentPlayer = if (currentPlayer == Piece.Color.WHITE) Piece.Color.BLACK else Piece.Color.WHITE
+    }
+
+    private fun aiMove() {
+        AiPlayer.move()
     }
 
     fun addPiece(piece: Piece) {
@@ -35,6 +40,7 @@ object GameHandler {
         MoveHandler.confirmMove()
         changeCurrentPlayer()
         generateAvailableMoves()
+        if (aiEnabled && currentPlayer == Piece.Color.BLACK) aiMove()
     }
 
     fun undo(foresight: Boolean = true) {
@@ -79,6 +85,7 @@ object GameHandler {
             if (foresight) {
                 checkForMate()
                 generateAvailableMoves()
+                if (aiEnabled && currentPlayer == Piece.Color.BLACK) aiMove()
             }
         }
     }

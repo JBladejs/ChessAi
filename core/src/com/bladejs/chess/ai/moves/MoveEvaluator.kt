@@ -1,5 +1,7 @@
 package com.bladejs.chess.ai.moves
 
-interface MoveEvaluator {
+import com.bladejs.chess.ai.data.MoveNode
 
+interface MoveEvaluator {
+    fun getBestMove(): MoveNode
 }
