@@ -8,6 +8,7 @@ import com.bladejs.chess.entities.GameBoard
 import com.bladejs.chess.entities.pieces.King
 import com.bladejs.chess.entities.pieces.Pawn
 import com.bladejs.chess.entities.pieces.Piece
+import com.bladejs.chess.entities.pieces.Queen
 import com.bladejs.chess.entities.windows.GameOverWindow
 import com.bladejs.chess.misc.Move
 import com.bladejs.chess.misc.Position
@@ -69,7 +70,9 @@ object GameHandler {
                 if (foresight && (y == 0 || y == 7)) {
                     removePiece(piece)
                     if (!GameBoard[x][y].isEmpty) GameBoard.remove(GameBoard[x][y].piece!!)
-                    GameBoard.promotionWindow.open(Position(x, y))
+                    if (currentPlayer == Piece.Color.WHITE || !aiEnabled)
+                        GameBoard.promotionWindow.open(Position(x, y))
+                    else addPiece(Queen(x, y, Piece.Color.BLACK))
                     return
                 }
             }
