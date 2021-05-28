@@ -25,7 +25,7 @@ object InputHandler : InputProcessor {
             val position = GameBoard.getFieldAt(mousePos.x, mousePos.y)
             if (position.x < 8 && position.y < 8 && position.x >= 0 && position.y >= 0) {
                 val field = GameBoard[position.x][position.y]
-                if (!field.isEmpty) {
+                if (!field.isEmpty && (field.piece!!.color == Piece.Color.WHITE || !GameHandler.AiEnabled)) {
                     draggedPiece = field.piece
 //                    draggedPiece!!.generateAvailableMoves()
                     GameBoard.highlight(draggedPiece!!.availableMoves)
