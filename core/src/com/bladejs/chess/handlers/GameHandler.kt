@@ -36,8 +36,9 @@ object GameHandler {
         generateAvailableMoves()
     }
 
-    fun undo() {
+    fun undo(foresight: Boolean = true) {
         if (MoveHandler.undoMove()) changeCurrentPlayer()
+        if (!foresight) generateAvailableMoves()
     }
 
     private fun forceMove(piece: Piece, x: Int, y: Int) {

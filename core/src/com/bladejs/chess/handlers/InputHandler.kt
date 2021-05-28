@@ -15,7 +15,7 @@ object InputHandler : InputProcessor {
 
     override fun keyUp(keycode: Int): Boolean {
         if (GameBoard.promotionWindow.promotion) return false
-        if (keycode == Keys.U) GameHandler.undo()
+        if (keycode == Keys.U) GameHandler.undo(false)
         return true
     }
 
