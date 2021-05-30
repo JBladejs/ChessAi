@@ -5,10 +5,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.utils.Array
 import com.bladejs.chess.ai.AiPlayer
 import com.bladejs.chess.entities.GameBoard
-import com.bladejs.chess.entities.pieces.King
-import com.bladejs.chess.entities.pieces.Pawn
-import com.bladejs.chess.entities.pieces.Piece
-import com.bladejs.chess.entities.pieces.Queen
+import com.bladejs.chess.entities.pieces.*
 import com.bladejs.chess.entities.windows.GameOverWindow
 import com.bladejs.chess.misc.GameState
 import com.bladejs.chess.misc.Move
@@ -17,7 +14,7 @@ import kotlin.math.abs
 
 //TODO: add board generation here
 object GameHandler {
-    var aiEnabled = true
+    var aiEnabled = false
     var currentPlayer = Piece.Color.WHITE
     var aiMoving = false
 
@@ -146,10 +143,20 @@ object GameHandler {
 //            println("${it.color} ${it.javaClass.simpleName} ${it.x}-${it.y}")
 //        }
         val pieces = Array<Piece>()
+        val clones = Array<Piece>()
         pieces.addAll(GameBoard.pieces.getPieces(Piece.Color.WHITE))
         pieces.addAll(GameBoard.pieces.getPieces(Piece.Color.BLACK))
         pieces.forEach {
-            it.generateAvailableMoves()
+            clones.add(it.clone())
+        }
+        for (i in 0 until pieces.size) {
+            //TODO: find a cause of this problem and fix it at its root
+//            if (pieces[i].moveCount != clones[i].moveCount || pieces[i].x != clones[i].x || pieces[i].y != clones[i].y) {
+//                pieces[i].moveCount = clones[i].moveCount
+//                pieces[i].x = clones[i].x
+//                pieces[i].y = clones[i].y
+//            }
+            pieces[i].generateAvailableMoves()
         }
     }
 }

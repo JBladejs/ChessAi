@@ -8,6 +8,7 @@ import com.bladejs.chess.handlers.GameHandler
 import com.bladejs.chess.misc.IntColor
 import com.bladejs.chess.misc.Position
 import com.bladejs.chess.misc.addValue
+import kotlin.math.abs
 import com.badlogic.gdx.utils.Array as GdxArray
 
 //TODO: generate available moves on the start of a turn
@@ -91,12 +92,23 @@ abstract class Piece(private val whiteTexture: Texture, private val blackTexture
                 GameBoard.rendering = false
                 GameBoard.remove(this)
                 GameBoard.add(this.clone())
+                var temp: Piece? = null
                 getAllMoves().forEach {
+                    if (this is King && abs(x - it.x) > 1) {
+                        temp = if (x == 2) GameBoard[0][y].piece!!
+                        else GameBoard[7][y].piece!!
+                        GameBoard.remove(temp!!)
+                        GameBoard.add(temp!!.clone())
+                    }
                     GameHandler.move(this.x, this.y, it.x, it.y, false)
                     if (!GameHandler.checkForCheck(color)){
                         positions.add(it)
                     }
                     GameHandler.undo()
+                    if (temp != null) {
+                        GameBoard.remove(GameBoard[temp!!.x][temp!!.y].piece!!)
+                        GameBoard.add(temp!!)
+                    }
                 }
                 GameBoard.remove(GameBoard[this.x][this.y].piece!!)
                 GameBoard.add(this)
