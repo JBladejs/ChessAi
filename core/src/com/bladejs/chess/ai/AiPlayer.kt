@@ -15,6 +15,7 @@ object AiPlayer {
 
     fun move() {
         val move = moveEval.getBestMove()
+        GameHandler.aiMoving = false
         GameHandler.move(move.fromX, move.fromY, move.toX, move.toY, list = true)
     }
 }

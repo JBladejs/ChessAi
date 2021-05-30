@@ -10,6 +10,7 @@ import com.bladejs.chess.entities.pieces.Pawn
 import com.bladejs.chess.entities.pieces.Piece
 import com.bladejs.chess.entities.pieces.Queen
 import com.bladejs.chess.entities.windows.GameOverWindow
+import com.bladejs.chess.misc.GameState
 import com.bladejs.chess.misc.Move
 import com.bladejs.chess.misc.Position
 import kotlin.math.abs
@@ -117,20 +118,26 @@ object GameHandler {
         return false
     }
 
-    fun checkForMate() {
-        if (!aiMoving) {
+    fun checkForMate(planning: Boolean = false): GameState {
+        if (!aiMoving || planning) {
             val pieceSet = GameBoard.pieces.getPieces(currentPlayer)
             pieceSet.forEach {
-                if (it.getAvailableMoves().size > 0) return
+                if (it.getAvailableMoves().size > 0) return GameState.ONGOING_DRAW
             }
-            GameBoard.gameOverWindow = if (checkForCheck(currentPlayer))
-                GameOverWindow(
-                    Gdx.graphics.height * 0.11111f,
-                    if (currentPlayer == Piece.Color.WHITE) GameOverWindow.State.LOOSE else GameOverWindow.State.WIN
-                )
-            else
-                GameOverWindow(Gdx.graphics.height * 0.11111f, GameOverWindow.State.DRAW)
+            return if (checkForCheck(currentPlayer)) {
+                if (currentPlayer == Piece.Color.WHITE) {
+                    if (!planning) GameBoard.gameOverWindow = GameOverWindow(Gdx.graphics.height * 0.11111f, GameOverWindow.State.LOOSE)
+                    GameState.BLACK_WON
+                } else {
+                    if(!planning) GameBoard.gameOverWindow = GameOverWindow(Gdx.graphics.height * 0.11111f, GameOverWindow.State.WIN)
+                    GameState.WHITE_WON
+                }
+            } else {
+                if (!planning) GameBoard.gameOverWindow = GameOverWindow(Gdx.graphics.height * 0.11111f, GameOverWindow.State.DRAW)
+                GameState.ONGOING_DRAW
+            }
         }
+        else return GameState.ONGOING_DRAW
     }
 
     fun generateAvailableMoves() {
