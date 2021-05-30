@@ -9,7 +9,7 @@ import com.bladejs.chess.ai.moves.MinMaxEvaluator
 import com.bladejs.chess.ai.moves.MoveEvaluator
 
 object AiPlayer {
-    private const val treeHeight = 3
+    private const val treeHeight = 8
     val boardEval: BoardEvaluator = NaiveEvaluator
     val moveEval: MoveEvaluator = AlphaBetaEvaluator(treeHeight)
 

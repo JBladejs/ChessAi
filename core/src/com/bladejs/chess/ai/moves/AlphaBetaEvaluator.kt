@@ -9,6 +9,8 @@ import kotlin.math.max
 import kotlin.math.min
 
 class AlphaBetaEvaluator(private val treeHeight: Int): MoveEvaluator {
+    var alpha = Int.MIN_VALUE
+    var beta = Int.MAX_VALUE
 
     override fun getBestMove(): MoveNode {
         GameBoard.rendering = false
@@ -23,7 +25,7 @@ class AlphaBetaEvaluator(private val treeHeight: Int): MoveEvaluator {
         var node: MoveNode? = null
         var value = Int.MAX_VALUE
         for (move in getAvailableMoves(0)) {
-            val temp = alphaBeta(move, alpha, beta)
+            val temp = alphaBeta(move/*, alpha, beta*/)
             if (temp < value) {
                 value = temp
                 node = move
@@ -34,9 +36,9 @@ class AlphaBetaEvaluator(private val treeHeight: Int): MoveEvaluator {
         return node!!
     }
 
-    private fun alphaBeta(node: MoveNode, a: Int, b: Int): Int {
-        var alpha = a
-        var beta = b
+    private fun alphaBeta(node: MoveNode/*, a: Int, b: Int*/): Int {
+//        var alpha = a
+//        var beta = b
         GameHandler.move(node.fromX, node.fromY, node.toX, node.toY, list = true)
         if (node.depth == treeHeight) {
 //            node.value = AiPlayer.boardEval.evaluateBoard()
@@ -46,14 +48,14 @@ class AlphaBetaEvaluator(private val treeHeight: Int): MoveEvaluator {
         }
         if (GameHandler.currentPlayer == Piece.Color.WHITE) { //IF MAX PLAYER
             for (it in getAvailableMoves(node.depth + 1)) {
-                alpha = max(alpha, alphaBeta(it, alpha, beta))
+                alpha = max(alpha, alphaBeta(it/*, alpha, beta*/))
                 if (alpha >= beta) break
             }
             GameHandler.undo(false)
             return alpha
         } else { //IF MIN PLAYER
             for (it in getAvailableMoves(node.depth + 1)) {
-                beta = min(beta, alphaBeta(it, alpha, beta))
+                beta = min(beta, alphaBeta(it/*, alpha, beta*/))
                 if (alpha >= beta) break
             }
             //TODO: check if it should be false or not
