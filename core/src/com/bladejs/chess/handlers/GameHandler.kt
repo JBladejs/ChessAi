@@ -18,13 +18,18 @@ import kotlin.math.abs
 object GameHandler {
     var aiEnabled = true
     var currentPlayer = Piece.Color.WHITE
+    var aiMoving = false
 
     internal fun changeCurrentPlayer() {
         currentPlayer = if (currentPlayer == Piece.Color.WHITE) Piece.Color.BLACK else Piece.Color.WHITE
     }
 
     private fun aiMove() {
-        AiPlayer.move()
+        if (!aiMoving) {
+            aiMoving = true
+            AiPlayer.move()
+            aiMoving = false
+        }
     }
 
     fun addPiece(piece: Piece) {
