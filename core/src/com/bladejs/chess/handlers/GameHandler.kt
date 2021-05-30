@@ -26,9 +26,14 @@ object GameHandler {
 
     private fun aiMove() {
         if (!aiMoving) {
+            var time = System.nanoTime()
             aiMoving = true
             AiPlayer.move()
             aiMoving = false
+            time -= System.nanoTime()
+            time = -time
+            val seconds = time.toFloat() * 0.000000001f
+            println(seconds)
         }
     }
 
