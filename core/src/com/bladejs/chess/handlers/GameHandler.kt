@@ -113,14 +113,19 @@ object GameHandler {
     }
 
     fun checkForMate() {
-        val pieceSet = GameBoard.pieces.getPieces(currentPlayer)
-        pieceSet.forEach {
-            if (it.getAvailableMoves().size > 0) return
+        if (!aiMoving) {
+            val pieceSet = GameBoard.pieces.getPieces(currentPlayer)
+            pieceSet.forEach {
+                if (it.getAvailableMoves().size > 0) return
+            }
+            GameBoard.gameOverWindow = if (checkForCheck(currentPlayer))
+                GameOverWindow(
+                    Gdx.graphics.height * 0.11111f,
+                    if (currentPlayer == Piece.Color.WHITE) GameOverWindow.State.LOOSE else GameOverWindow.State.WIN
+                )
+            else
+                GameOverWindow(Gdx.graphics.height * 0.11111f, GameOverWindow.State.DRAW)
         }
-        GameBoard.gameOverWindow = if (checkForCheck(currentPlayer))
-            GameOverWindow(Gdx.graphics.height * 0.11111f, if (currentPlayer == Piece.Color.WHITE) GameOverWindow.State.LOOSE else GameOverWindow.State.WIN)
-        else
-            GameOverWindow(Gdx.graphics.height * 0.11111f, GameOverWindow.State.DRAW)
     }
 
     fun generateAvailableMoves() {
