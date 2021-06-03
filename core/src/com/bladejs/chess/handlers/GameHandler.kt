@@ -14,7 +14,7 @@ import kotlin.math.abs
 
 //TODO: add board generation here
 object GameHandler {
-    var aiEnabled = true
+    var aiEnabled = false
     var currentPlayer = Piece.Color.WHITE
     var aiMoving = false
 
@@ -115,9 +115,11 @@ object GameHandler {
         return false
     }
 
+    //TODO: find all the places where i iteratively change an array im working on and find a solution to fix them
     fun checkForMate(planning: Boolean = false): GameState {
         if (!aiMoving || planning) {
-            val pieceSet = GameBoard.pieces.getPieces(currentPlayer)
+            val pieceSet = Array<Piece>()
+            pieceSet.addAll(GameBoard.pieces.getPieces(currentPlayer))
             pieceSet.forEach {
                 if (it.getAvailableMoves().size > 0) return GameState.ONGOING
             }
