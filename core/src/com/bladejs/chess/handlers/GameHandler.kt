@@ -145,19 +145,9 @@ object GameHandler {
 //            println("${it.color} ${it.javaClass.simpleName} ${it.x}-${it.y}")
 //        }
         val pieces = Array<Piece>()
-        val clones = Array<Piece>()
         pieces.addAll(GameBoard.pieces.getPieces(Piece.Color.WHITE))
         pieces.addAll(GameBoard.pieces.getPieces(Piece.Color.BLACK))
-        pieces.forEach {
-            clones.add(it.clone())
-        }
         for (i in 0 until pieces.size) {
-            //TODO: find a cause of this problem and fix it at its root
-//            if (pieces[i].moveCount != clones[i].moveCount || pieces[i].x != clones[i].x || pieces[i].y != clones[i].y) {
-//                pieces[i].moveCount = clones[i].moveCount
-//                pieces[i].x = clones[i].x
-//                pieces[i].y = clones[i].y
-//            }
             pieces[i].generateAvailableMoves()
         }
     }
