@@ -4,13 +4,14 @@ import com.bladejs.chess.ai.moves.RandomEvaluator
 import com.bladejs.chess.handlers.GameHandler
 import com.bladejs.chess.ai.board.BoardEvaluator
 import com.bladejs.chess.ai.board.NaiveEvaluator
+import com.bladejs.chess.ai.board.PieceEvaluator
 import com.bladejs.chess.ai.moves.AlphaBetaEvaluator
 import com.bladejs.chess.ai.moves.MinMaxEvaluator
 import com.bladejs.chess.ai.moves.MoveEvaluator
 
 object AiPlayer {
     private const val treeHeight = 8
-    val boardEval: BoardEvaluator = NaiveEvaluator
+    val boardEval: BoardEvaluator = PieceEvaluator
     val moveEval: MoveEvaluator = AlphaBetaEvaluator(treeHeight)
 
     fun move() {
