@@ -10,7 +10,11 @@ interface BoardEvaluator {
 
     fun evaluateBoard(): Int {
         val state = GameHandler.checkForMate(true)
-        return if (state != GameState.ONGOING_DRAW) if(state.score > 1) Int.MAX_VALUE else Int.MIN_VALUE
-        else estimateScore()
+        return when(state) {
+            GameState.ONGOING -> estimateScore()
+            GameState.DRAW -> 0
+            GameState.WHITE_WON -> 10000000
+            GameState.BLACK_WON -> -10000000
+        }
     }
 }

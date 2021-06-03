@@ -5,6 +5,7 @@ import com.bladejs.chess.ai.data.MoveNode
 import com.bladejs.chess.entities.GameBoard
 import com.bladejs.chess.entities.pieces.Piece
 import com.bladejs.chess.handlers.GameHandler
+import com.bladejs.chess.misc.GameState
 import kotlin.math.max
 import kotlin.math.min
 
@@ -45,6 +46,11 @@ class AlphaBetaEvaluator(private val treeHeight: Int): MoveEvaluator {
             val value = AiPlayer.boardEval.evaluateBoard()
             GameHandler.undo(false)
             return value
+        }
+        val state = GameHandler.checkForMate(true)
+        if (state == GameState.WHITE_WON || state == GameState.BLACK_WON || state == GameState.DRAW) {
+            GameHandler.undo()
+            return state.score
         }
         if (GameHandler.currentPlayer == Piece.Color.WHITE) { //IF MAX PLAYER
             for (it in getAvailableMoves(node.depth + 1)) {

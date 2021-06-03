@@ -119,7 +119,7 @@ object GameHandler {
         if (!aiMoving || planning) {
             val pieceSet = GameBoard.pieces.getPieces(currentPlayer)
             pieceSet.forEach {
-                if (it.getAvailableMoves().size > 0) return GameState.ONGOING_DRAW
+                if (it.getAvailableMoves().size > 0) return GameState.ONGOING
             }
             return if (checkForCheck(currentPlayer)) {
                 if (currentPlayer == Piece.Color.WHITE) {
@@ -131,10 +131,10 @@ object GameHandler {
                 }
             } else {
                 if (!planning) GameBoard.gameOverWindow = GameOverWindow(Gdx.graphics.height * 0.11111f, GameOverWindow.State.DRAW)
-                GameState.ONGOING_DRAW
+                GameState.DRAW
             }
         }
-        else return GameState.ONGOING_DRAW
+        else return GameState.ONGOING
     }
 
     fun generateAvailableMoves() {
