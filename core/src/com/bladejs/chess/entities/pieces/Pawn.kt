@@ -29,7 +29,7 @@ class Pawn(x: Int, y: Int, color: Color) : Piece(Texture("pawn.png"), Texture("p
             positions.addValue(checkForEnPassant(x - 1, y))
             positions.addValue(checkForEnPassant(x + 1, y))
         }
-        if (moveCount == 0) positions.addValue(checkForMove(x, y + (yIncrease * 2), false))
+        if (moveCount == 0 && checkForMove(x, y + yIncrease, false) != null) positions.addValue(checkForMove(x, y + (yIncrease * 2), false))
         return positions
     }
 }
