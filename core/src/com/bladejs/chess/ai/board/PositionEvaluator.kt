@@ -1,17 +1,20 @@
 package com.bladejs.chess.ai.board
 
+import com.badlogic.gdx.Game
 import com.badlogic.gdx.utils.Array
 import com.bladejs.chess.entities.GameBoard
 import com.bladejs.chess.entities.pieces.*
 import kotlin.math.abs
 
 object PositionEvaluator: BoardEvaluator {
+    private var endGame = false
     private val pawn = Array<Int>()
     private val bishop = Array<Int>()
     private val knight = Array<Int>()
     private val rook = Array<Int>()
     private val queen = Array<Int>()
     private val king = Array<Int>()
+    private val endGameKing = Array<Int>()
 
     init {
         pawn.addAll(
@@ -74,6 +77,16 @@ object PositionEvaluator: BoardEvaluator {
             20, 20,  0,  0,  0,  0, 20, 20,
             20, 30, 10,  0,  0, 10, 30, 20
         )
+        endGameKing.addAll(
+            -50,-40,-30,-20,-20,-30,-40,-50,
+            -30,-20,-10,  0,  0,-10,-20,-30,
+            -30,-10, 20, 30, 30, 20,-10,-30,
+            -30,-10, 30, 40, 40, 30,-10,-30,
+            -30,-10, 30, 40, 40, 30,-10,-30,
+            -30,-10, 20, 30, 30, 20,-10,-30,
+            -30,-30,  0,  0,  0,  0,-30,-30,
+            -50,-30,-30,-30,-30,-30,-30,-50
+        )
     }
 
     override fun estimateScore(): Int {
@@ -90,10 +103,34 @@ object PositionEvaluator: BoardEvaluator {
                 is Knight -> 320 * knight[y * 8 + x]
                 is Rook -> 500 * rook[y * 8 + x]
                 is Queen -> 900 * queen[y * 8 + x]
-                else -> 20000 * king[y * 8 + x]
+                else -> if (endGame || checkEndGame()) 20000 * endGameKing[y * 8 + x] else 20000 * king[y * 8 + x]
             }
             score += if (it.color == Piece.Color.WHITE) value else -value
         }
         return score
+    }
+
+    private fun hasAQueen(side: Piece.Color): Boolean {
+        GameBoard.pieces.getPieces(side).forEach {
+            if (it is Queen) return true
+        }
+        return false
+    }
+
+    private fun checkEndGame(): Boolean {
+        return if (hasAQueen(Piece.Color.WHITE)) {
+            if (GameBoard.pieces.getPieces(Piece.Color.WHITE).size < 4) {
+                endGame = true
+                true
+            } else false
+        } else if (hasAQueen(Piece.Color.BLACK)) {
+            if (GameBoard.pieces.getPieces(Piece.Color.BLACK).size < 4) {
+                endGame = true
+                true
+            } else false
+        } else {
+            endGame = true
+            true
+        }
     }
 }
