@@ -53,7 +53,7 @@ class AlphaBetaEvaluator(private val treeHeight: Int): MoveEvaluator {
         }
         val state = GameHandler.checkForMate(true)
         if (state == GameState.WHITE_WON || state == GameState.BLACK_WON || state == GameState.DRAW) {
-            GameHandler.undo()
+            GameHandler.undo(false)
             return state.score
         }
         val moves = getAvailableMoves()
