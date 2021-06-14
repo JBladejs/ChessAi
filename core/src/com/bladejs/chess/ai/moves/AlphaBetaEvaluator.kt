@@ -18,18 +18,19 @@ class AlphaBetaEvaluator(private val treeHeight: Int): MoveEvaluator {
 
     override fun getBestMove(): MoveNode {
         GameBoard.rendering = false
-        val move = alphaBeta()
+        val move = alphaBeta(treeHeight)
         GameBoard.rendering = true
         return move
     }
 
-    private fun alphaBeta(): MoveNode {
+    private fun alphaBeta(depth: Int): MoveNode {
         val alpha = Int.MIN_VALUE
         var beta = Int.MAX_VALUE
         var node: MoveNode? = null
         var value = Int.MAX_VALUE
-        for (move in getAvailableMoves(0)) {
-            val temp = alphaBeta(move, alpha, beta)
+        val moves = getAvailableMoves()
+        for (move in moves) {
+            val temp = alphaBeta(depth - 1, move, alpha, beta)
             if (temp < value) {
                 value = temp
                 node = move
@@ -40,11 +41,11 @@ class AlphaBetaEvaluator(private val treeHeight: Int): MoveEvaluator {
         return node!!
     }
 
-    private fun alphaBeta(node: MoveNode, a: Int, b: Int): Int {
+    private fun alphaBeta(depth: Int, node: MoveNode, a: Int, b: Int): Int {
         var alpha = a
         var beta = b
         GameHandler.move(node.fromX, node.fromY, node.toX, node.toY, list = true)
-        if (node.depth == treeHeight) {
+        if (depth == 0) {
 //            node.value = AiPlayer.boardEval.evaluateBoard()
             val value = AiPlayer.boardEval.evaluateBoard()
             GameHandler.undo(false)
@@ -55,16 +56,17 @@ class AlphaBetaEvaluator(private val treeHeight: Int): MoveEvaluator {
             GameHandler.undo()
             return state.score
         }
+        val moves = getAvailableMoves()
         if (GameHandler.currentPlayer == Piece.Color.WHITE) { //IF MAX PLAYER
-            for (it in getAvailableMoves(node.depth + 1)) {
-                alpha = max(alpha, alphaBeta(it, alpha, beta))
+            for (it in moves) {
+                alpha = max(alpha, alphaBeta(depth - 1, it, alpha, beta))
                 if (alpha >= beta) break
             }
             GameHandler.undo(false)
             return alpha
         } else { //IF MIN PLAYER
-            for (it in getAvailableMoves(node.depth + 1)) {
-                beta = min(beta, alphaBeta(it, alpha, beta))
+            for (it in moves) {
+                beta = min(beta, alphaBeta(depth -1, it, alpha, beta))
                 if (alpha >= beta) break
             }
             //TODO: check if it should be false or not

@@ -9,11 +9,11 @@ import com.bladejs.chess.misc.Move
 //TODO: try to remove MoveNode and operate on pure data
 interface MoveEvaluator {
     fun getBestMove(): MoveNode
-    fun getAvailableMoves(depth: Int): Array<MoveNode> {
+    fun getAvailableMoves(): Array<MoveNode> {
         val moves = Array<MoveNode>()
         GameBoard.pieces.getPieces(GameHandler.currentPlayer).forEach { piece ->
             piece.availableMoves.forEach { move ->
-                moves.add(MoveNode(depth, piece.x, piece.y, move.x, move.y))
+                moves.add(MoveNode(piece.x, piece.y, move.x, move.y))
             }
         }
         return moves

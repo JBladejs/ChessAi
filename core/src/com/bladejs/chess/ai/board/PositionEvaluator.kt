@@ -83,7 +83,7 @@ object PositionEvaluator: BoardEvaluator {
         pieces.addAll(GameBoard.pieces.getPieces(Piece.Color.BLACK))
         pieces.forEach {
             val x = it.x
-            val y = if (it.color == Piece.Color.WHITE) it.y else abs(it.y - 7)
+            val y = if (it.color == Piece.Color.BLACK) it.y else abs(it.y - 7)
             val value = when(it) {
                 is Pawn -> 100 * pawn[y * 7 + x]
                 is Bishop -> 330 * bishop[y * 7 + x]

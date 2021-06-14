@@ -5,6 +5,8 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.bladejs.chess.ChessGame
+import com.bladejs.chess.ai.board.PieceEvaluator
+import com.bladejs.chess.ai.board.PositionEvaluator
 import com.bladejs.chess.entities.pieces.*
 import com.bladejs.chess.entities.pieces.Piece.Color.BLACK
 import com.bladejs.chess.entities.pieces.Piece.Color.WHITE

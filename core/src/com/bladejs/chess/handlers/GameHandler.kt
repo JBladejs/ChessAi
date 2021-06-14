@@ -4,6 +4,8 @@ import com.badlogic.gdx.Game
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.utils.Array
 import com.bladejs.chess.ai.AiPlayer
+import com.bladejs.chess.ai.board.PieceEvaluator
+import com.bladejs.chess.ai.board.PositionEvaluator
 import com.bladejs.chess.entities.GameBoard
 import com.bladejs.chess.entities.pieces.*
 import com.bladejs.chess.entities.windows.GameOverWindow
