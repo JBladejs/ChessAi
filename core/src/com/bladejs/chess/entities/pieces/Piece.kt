@@ -96,7 +96,7 @@ abstract class Piece(private val whiteTexture: Texture, private val blackTexture
                 getAllMoves().forEach {
                     //TODO: find a better way to fix this
                     if (this is King && abs(x - it.x) > 1) {
-                        temp = if (x == 2) GameBoard[0][y].piece!!
+                        temp = if (it.x == 2) GameBoard[0][y].piece!!
                         else GameBoard[7][y].piece!!
                         GameBoard.remove(temp!!)
                         GameBoard.add(temp!!.clone())

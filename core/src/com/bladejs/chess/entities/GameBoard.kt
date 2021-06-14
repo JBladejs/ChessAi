@@ -53,6 +53,38 @@ object GameBoard {
         add(Bishop(5, 7, BLACK))
         add(Knight(1, 7, BLACK))
         add(Knight(6, 7, BLACK))
+
+//        debug:
+//        add(Rook(0, 0, WHITE))
+//        add(Bishop(2, 0, WHITE))
+//        add(Queen(3, 0, WHITE))
+//        add(King(4, 0, WHITE))
+//        add(Bishop(5, 0, WHITE))
+//        add(Rook(7, 0, WHITE))
+//        add(Pawn(3, 1, WHITE))
+//        add(Pawn(5, 1, WHITE))
+//        add(Pawn(6, 1, WHITE))
+//        add(Pawn(4, 2, WHITE))
+//        add(Knight(5, 2, WHITE))
+//        add(Pawn(6, 2, WHITE))
+//        add(Queen(1, 3, BLACK))
+//        add(Pawn(2, 3, WHITE))
+//        add(Knight(4, 3, WHITE))
+//        add(Bishop(6, 3, BLACK))
+//        add(Rook(0, 5, BLACK))
+//        val king = King(1, 5, BLACK)
+//        king.moveCount++
+//        add(king)
+//        add(Pawn(3, 5, BLACK))
+//        add(Pawn(1, 6, BLACK))
+//        add(Pawn(2, 6, BLACK))
+//        add(Pawn(4, 6, BLACK))
+//        add(Pawn(5, 6, BLACK))
+//        add(Pawn(6, 6, BLACK))
+//        add(Pawn(7, 6, BLACK))
+//        add(Bishop(5, 7, BLACK))
+//        add(Rook(7, 7, BLACK))
+
         GameHandler.generateAvailableMoves()
     }
 
@@ -79,6 +111,7 @@ object GameBoard {
     }
 
     fun add(piece: Piece) {
+//        if (piece is Rook) throw Exception()
         pieces.add(piece)
         board[piece.x][piece.y].piece = piece
     }

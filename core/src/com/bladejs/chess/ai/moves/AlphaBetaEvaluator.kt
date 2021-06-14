@@ -4,6 +4,7 @@ import com.bladejs.chess.ai.AiPlayer
 import com.bladejs.chess.ai.data.MoveNode
 import com.bladejs.chess.entities.GameBoard
 import com.bladejs.chess.entities.pieces.Piece
+import com.bladejs.chess.entities.pieces.Rook
 import com.bladejs.chess.handlers.GameHandler
 import com.bladejs.chess.misc.GameState
 import kotlin.math.max
@@ -12,6 +13,8 @@ import kotlin.math.min
 class AlphaBetaEvaluator(private val treeHeight: Int): MoveEvaluator {
 //    var alpha = Int.MIN_VALUE
 //    var beta = Int.MAX_VALUE
+//    TODO: rewrite whole AlphaBeta
+    var debug = 0
 
     override fun getBestMove(): MoveNode {
         GameBoard.rendering = false
