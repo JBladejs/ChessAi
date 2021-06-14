@@ -85,12 +85,12 @@ object PositionEvaluator: BoardEvaluator {
             val x = it.x
             val y = if (it.color == Piece.Color.BLACK) it.y else abs(it.y - 7)
             val value = when(it) {
-                is Pawn -> 100 * pawn[y * 7 + x]
-                is Bishop -> 330 * bishop[y * 7 + x]
-                is Knight -> 320 * knight[y * 7 + x]
-                is Rook -> 500 * rook[y * 7 + x]
-                is Queen -> 900 * queen[y * 7 + x]
-                else -> 20000 * king[y * 7 + x]
+                is Pawn -> 100 * pawn[y * 8 + x]
+                is Bishop -> 330 * bishop[y * 8 + x]
+                is Knight -> 320 * knight[y * 8 + x]
+                is Rook -> 500 * rook[y * 8 + x]
+                is Queen -> 900 * queen[y * 8 + x]
+                else -> 20000 * king[y * 8 + x]
             }
             score += if (it.color == Piece.Color.WHITE) value else -value
         }
