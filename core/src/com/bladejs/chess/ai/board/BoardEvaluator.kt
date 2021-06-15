@@ -13,8 +13,8 @@ interface BoardEvaluator {
         return when(state) {
             GameState.ONGOING -> estimateScore()
             GameState.DRAW -> 0
-            GameState.WHITE_WON -> 10000000
-            GameState.BLACK_WON -> -10000000
+            GameState.WHITE_WON -> 100000000
+            GameState.BLACK_WON -> -100000000
         }
     }
 }

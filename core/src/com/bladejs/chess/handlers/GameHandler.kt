@@ -79,10 +79,28 @@ object GameHandler {
                     removePiece(GameBoard[x][y + 1].piece!!) else removePiece(GameBoard[x][y - 1].piece!!)
                 if (foresight && (y == 0 || y == 7)) {
                     removePiece(piece)
-                    if (!GameBoard[x][y].isEmpty) GameBoard.remove(GameBoard[x][y].piece!!)
-                    if (currentPlayer == Piece.Color.WHITE || !aiEnabled)
-                        GameBoard.promotionWindow.open(Position(x, y))
-                    else addPiece(Queen(x, y, Piece.Color.BLACK))
+//                    if (!GameBoard[x][y].isEmpty) GameBoard.remove(GameBoard[x][y].piece!!)
+                    if (!GameBoard[x][y].isEmpty) removePiece(GameBoard[x][y].piece!!)
+//                    TODO: try to re-add promotion window
+//                    GameBoard.promotionWindow.open(Position(x, y))
+//                    if (currentPlayer == Piece.Color.WHITE || !aiEnabled)
+//                        GameBoard.promotionWindow.open(Position(x, y))
+//                    else addPiece(Queen(x, y, Piece.Color.BLACK))
+                    addPiece(Queen(x, y, currentPlayer))
+                    MoveHandler.confirmMove()
+                    changeCurrentPlayer()
+                    if (foresight) {
+                        checkForMate()
+                        generateAvailableMoves()
+                        if (aiEnabled && currentPlayer == Piece.Color.BLACK) aiMove()
+                    }
+//                    MoveHandler.confirmMove()
+//                    changeCurrentPlayer()
+//                    if (foresight) {
+//                        checkForMate()
+//                        generateAvailableMoves()
+//                        if (aiEnabled && currentPlayer == Piece.Color.BLACK) aiMove()
+//                    }
                     return
                 }
             }
