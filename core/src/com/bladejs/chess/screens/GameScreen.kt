@@ -27,6 +27,7 @@ class GameScreen(private val camera: OrthographicCamera) : Screen {
         camera.update()
         board.render()
         GameBoard.gameOverWindow?.render()
+        GameHandler.update()
     }
 
     override fun dispose() {}

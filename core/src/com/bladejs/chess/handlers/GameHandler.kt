@@ -19,6 +19,8 @@ object GameHandler {
     var aiEnabled = true
     var currentPlayer = Piece.Color.WHITE
     var aiMoving = false
+    var aiTurn = false
+    var aiCounter = 0
 
     internal fun changeCurrentPlayer() {
         currentPlayer = if (currentPlayer == Piece.Color.WHITE) Piece.Color.BLACK else Piece.Color.WHITE
@@ -37,6 +39,17 @@ object GameHandler {
         }
     }
 
+    fun update() {
+       //TODO: try to find an alternative fix
+        if (aiTurn) {
+            if (aiCounter > 0) {
+                aiMove()
+                aiTurn = false
+                aiCounter = 0
+            } else aiCounter++
+        }
+    }
+
     fun addPiece(piece: Piece) {
         GameBoard.add(piece)
         MoveHandler.appendToMove(Move.Type.ADD, Position(piece.x, piece.y), piece.clone())
@@ -51,7 +64,7 @@ object GameHandler {
         MoveHandler.confirmMove()
         changeCurrentPlayer()
         generateAvailableMoves()
-        if (aiEnabled && currentPlayer == Piece.Color.BLACK) aiMove()
+        if (aiEnabled && currentPlayer == Piece.Color.BLACK) /*aiMove()*/ aiTurn = true
     }
 
     fun undo(foresight: Boolean = true) {
@@ -92,7 +105,7 @@ object GameHandler {
                     if (foresight) {
                         checkForMate()
                         generateAvailableMoves()
-                        if (aiEnabled && currentPlayer == Piece.Color.BLACK) aiMove()
+                        if (aiEnabled && currentPlayer == Piece.Color.BLACK) /*aiMove()*/ aiTurn = true
                     }
 //                    MoveHandler.confirmMove()
 //                    changeCurrentPlayer()
@@ -116,7 +129,7 @@ object GameHandler {
             if (foresight) {
                 checkForMate()
                 generateAvailableMoves()
-                if (aiEnabled && currentPlayer == Piece.Color.BLACK) aiMove()
+                if (aiEnabled && currentPlayer == Piece.Color.BLACK) /*aiMove()*/ aiTurn = true
             }
         }
     }
