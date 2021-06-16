@@ -13,8 +13,6 @@ import kotlin.math.min
 class AlphaBetaEvaluator(private val treeHeight: Int): MoveEvaluator {
 //    var alpha = Int.MIN_VALUE
 //    var beta = Int.MAX_VALUE
-//    TODO: rewrite whole AlphaBeta
-    var debug = 0
 
     override fun getBestMove(): MoveNode {
         GameBoard.rendering = false
@@ -44,17 +42,17 @@ class AlphaBetaEvaluator(private val treeHeight: Int): MoveEvaluator {
     private fun alphaBeta(depth: Int, node: MoveNode, a: Int, b: Int): Int {
         var alpha = a
         var beta = b
+//        if (node.fromX == 4 && node.fromY == 0 && node.toX == 0 && node.toY == 0) {
+//            println("debug")
+//        }
         GameHandler.move(node.fromX, node.fromY, node.toX, node.toY, list = true)
-        if (depth == 0) {
-//            node.value = AiPlayer.boardEval.evaluateBoard()
-            val value = AiPlayer.boardEval.evaluateBoard()
+        val state = GameHandler.checkForMate(true)
+        if (depth == 0 || state == GameState.WHITE_WON || state == GameState.BLACK_WON || state == GameState.DRAW) {
+            var value = AiPlayer.boardEval.evaluateBoard(state)
+            //TODO: find a way to substitute this
+            if (state == GameState.BLACK_WON) value -= depth
             GameHandler.undo(false)
             return value
-        }
-        val state = GameHandler.checkForMate(true)
-        if (state == GameState.WHITE_WON || state == GameState.BLACK_WON || state == GameState.DRAW) {
-            GameHandler.undo(false)
-            return state.score
         }
         val moves = getAvailableMoves()
         if (GameHandler.currentPlayer == Piece.Color.WHITE) { //IF MAX PLAYER

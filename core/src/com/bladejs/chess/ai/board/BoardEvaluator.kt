@@ -10,6 +10,10 @@ interface BoardEvaluator {
 
     fun evaluateBoard(): Int {
         val state = GameHandler.checkForMate(true)
+        return evaluateBoard(state)
+    }
+
+    fun evaluateBoard(state: GameState): Int {
         return when(state) {
             GameState.ONGOING -> estimateScore()
             GameState.DRAW -> 0
