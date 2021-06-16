@@ -22,15 +22,11 @@ class GameScreen(private val camera: OrthographicCamera) : Screen {
             GameBoard.promotionWindow.render()
             return
         }
-        if (GameBoard.gameOverWindow != null) {
-            camera.update()
-            GameBoard.gameOverWindow!!.render()
-            return
-        }
         Gdx.gl.glClearColor(background.red, background.green, background.blue, background.alpha)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
         camera.update()
         board.render()
+        GameBoard.gameOverWindow?.render()
     }
 
     override fun dispose() {}
