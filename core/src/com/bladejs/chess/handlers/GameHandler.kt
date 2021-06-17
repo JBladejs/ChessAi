@@ -190,4 +190,34 @@ object GameHandler {
             pieces[i].generateAvailableMoves()
         }
     }
+
+    //For debugging:
+    fun getBoardPrint(): String {
+        var text = ""
+        for (j in 0..7) {
+            for (i in 7 downTo 0) {
+                var a = ""
+                var b = ""
+                if (GameBoard[i][j].piece == null) {
+                    a = "x"
+                    b = "x"
+                }
+                else{
+                    a = when(GameBoard[i][j].piece) {
+                        is Bishop -> "B"
+                        is King -> "K"
+                        is Pawn -> "P"
+                        is Queen -> "Q"
+                        is Rook -> "R"
+                        is Knight -> "N"
+                        else -> "x"
+                    }
+                    b = if (GameBoard[i][j].piece!!.color == Piece.Color.BLACK) "b" else "w"
+                }
+                text += "$a$b "
+            }
+            text += "\n"
+        }
+        return text
+    }
 }
