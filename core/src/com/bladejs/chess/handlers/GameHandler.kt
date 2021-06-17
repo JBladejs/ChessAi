@@ -192,10 +192,11 @@ object GameHandler {
     }
 
     //For debugging:
+    //For debugging:
     fun getBoardPrint(): String {
         var text = ""
-        for (j in 0..7) {
-            for (i in 7 downTo 0) {
+        for (j in 7 downTo 0) {
+            for (i in 0..7) {
                 var a = ""
                 var b = ""
                 if (GameBoard[i][j].piece == null) {
