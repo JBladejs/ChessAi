@@ -25,6 +25,8 @@ object GameBoard {
     private var halfCellSize = cellSize * 0.5f // cell size / 2
     private var doubleCellSize = cellSize * 2f // cell size * 2
     private var quarterCellSize = halfCellSize * 0.5f // cell size / 4
+    var fieldFrom: Pair<Int, Int>? = null
+    var fieldTo: Pair<Int, Int>? = null
     val promotionWindow = PromotionWindow(cellSize)
     var gameOverWindow: GameOverWindow? = null
     var rendering = true
@@ -165,6 +167,11 @@ object GameBoard {
                 for (j in 0..7) {
                     if (board[i][j].isHighlighted) rect((halfCellSize + i * cellSize), (halfCellSize + j * cellSize), cellSize, cellSize)
                 }
+            }
+            if (fieldFrom != null && fieldTo != null) {
+                color.set(1f, 1f, 0f, 0.5f)
+                rect((halfCellSize + fieldFrom!!.first * cellSize), (halfCellSize + fieldFrom!!.second * cellSize), cellSize, cellSize)
+                rect((halfCellSize + fieldTo!!.first * cellSize), (halfCellSize + fieldTo!!.second * cellSize), cellSize, cellSize)
             }
             end()
         }

@@ -84,6 +84,8 @@ object GameHandler {
 
     fun move(piece: Piece, x: Int, y: Int, foresight: Boolean = true, list: Boolean = false) {
         if (piece.canMoveTo(x, y, list, foresight)) {
+            val fromX = piece.x
+            val fromY = piece.y
             if (piece is Pawn) {
                 //Pawn moving two fields
                 if (abs(y - piece.y) > 1) piece.movedTwoFields = true
@@ -103,6 +105,8 @@ object GameHandler {
                     MoveHandler.confirmMove()
                     changeCurrentPlayer()
                     if (foresight) {
+                        GameBoard.fieldFrom = Pair(fromX, fromY)
+                        GameBoard.fieldTo = Pair(x, y)
                         checkForMate()
                         generateAvailableMoves()
                         if (aiEnabled && currentPlayer == Piece.Color.BLACK) /*aiMove()*/ aiTurn = true
@@ -127,6 +131,8 @@ object GameHandler {
             MoveHandler.confirmMove()
             changeCurrentPlayer()
             if (foresight) {
+                GameBoard.fieldFrom = Pair(fromX, fromY)
+                GameBoard.fieldTo = Pair(x, y)
                 checkForMate()
                 generateAvailableMoves()
                 if (aiEnabled && currentPlayer == Piece.Color.BLACK) /*aiMove()*/ aiTurn = true

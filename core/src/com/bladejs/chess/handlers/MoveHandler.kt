@@ -33,7 +33,7 @@ object MoveHandler {
     }
 
     internal fun confirmMove() {
-        moves.add(Move(currentMoveTypes.clone(), currentPositions.clone(), currentPieces.clone()))
+        moves.add(Move(currentMoveTypes.clone(), currentPositions.clone(), currentPieces.clone(), GameBoard.fieldFrom, GameBoard.fieldTo))
         deleteMove()
     }
 
@@ -44,6 +44,8 @@ object MoveHandler {
             if (lastMove.types[i] == Move.Type.ADD) GameBoard.remove(GameBoard[lastMove.positions[i].x][lastMove.positions[i].y].piece!!)
             if (lastMove.types[i] == Move.Type.REMOVE) GameBoard.add(lastMove.pieces[i])
         }
+        GameBoard.fieldFrom = lastMove.fieldFrom
+        GameBoard.fieldTo = lastMove.fieldTo
         moves.removeIndex(moves.size - 1)
         deleteMove()
         return true
