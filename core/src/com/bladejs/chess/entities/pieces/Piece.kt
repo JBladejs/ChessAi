@@ -87,6 +87,7 @@ abstract class Piece(private val whiteTexture: Texture, private val blackTexture
     //TODO: refactor undoing and foresight
     fun getAvailableMoves(foresight: Boolean = true, ignoreTurn: Boolean = false): GdxArray<Position> {
         val positions = GdxArray<Position>()
+        var cont = false
         if (ignoreTurn || GameHandler.currentPlayer == color) {
             if (foresight) {
                 GameBoard.rendering = false
@@ -94,27 +95,45 @@ abstract class Piece(private val whiteTexture: Texture, private val blackTexture
                 GameBoard.add(this.clone())
                 var temp: Piece? = null
                 getAllMoves().forEach {
+                    cont = false
                     //TODO: find a better way to fix this
                     if (this is King && abs(x - it.x) > 1) {
-                        temp = if (it.x == 2) GameBoard[0][y].piece!!
-                        else GameBoard[7][y].piece!!
-                        GameBoard.remove(temp!!)
-                        GameBoard.add(temp!!.clone())
+                        if (GameHandler.checkForCheck(color)) cont = true
+                        if (it.x == 2) {
+                            GameBoard.pieces.getPieces(if (color == Color.WHITE) Color.BLACK else Color.WHITE).forEach { piece ->
+                                if (piece.canMoveTo(3, y, foresight = false, ignoreTurn = true)) cont = true
+                            }
+                        } else {
+                            GameBoard.pieces.getPieces(if (color == Color.WHITE) Color.BLACK else Color.WHITE).forEach { piece ->
+                                if (piece.canMoveTo(5, y, foresight = false, ignoreTurn = true)) cont = true
+                            }
+                        }
+                        if (!cont) {
+                            temp = if (it.x == 2) GameBoard[0][y].piece!!
+                            else GameBoard[7][y].piece!!
+                            GameBoard.remove(temp!!)
+                            GameBoard.add(temp!!.clone())
+                        }
                     }
-                    GameHandler.move(this.x, this.y, it.x, it.y, false)
-                    if (!GameHandler.checkForCheck(color)){
-                        positions.add(it)
-                    }
-                    GameHandler.undo()
-                    if (temp != null) {
-                        GameBoard.remove(GameBoard[temp!!.x][temp!!.y].piece!!)
-                        GameBoard.add(temp!!)
+                    if (!cont) {
+                        GameHandler.move(this.x, this.y, it.x, it.y, false)
+                        if (!GameHandler.checkForCheck(color)) {
+                            positions.add(it)
+                        }
+                        GameHandler.undo()
+                        if (temp != null) {
+                            GameBoard.remove(GameBoard[temp!!.x][temp!!.y].piece!!)
+                            GameBoard.add(temp!!)
+                        }
                     }
                 }
                 GameBoard.remove(GameBoard[this.x][this.y].piece!!)
                 GameBoard.add(this)
                 GameBoard.rendering = true
-            } else return getAllMoves()
+            } else //TODO: find a better way to fix this
+            {
+                return getAllMoves()
+            }
         }
         return positions
     }

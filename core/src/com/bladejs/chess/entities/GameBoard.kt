@@ -68,6 +68,13 @@ object GameBoard {
 //        add(Pawn(7, 2, BLACK))
 //        add(Queen(3, 0, BLACK))
 
+//        add(Pawn(0, 1, WHITE))
+//        add(King(4, 0, WHITE))
+//        add(Rook(0, 0, WHITE))
+//        add(Rook(7, 0, WHITE))
+//        add(King(4, 7, BLACK))
+//        add(Queen(3, 7, BLACK))
+
         GameHandler.generateAvailableMoves()
     }
 
