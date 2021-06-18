@@ -17,7 +17,17 @@ class PieceCollection: Iterable<Piece> {
     }
 
     fun remove(piece: Piece) {
-        getPieces(piece.color).remove(piece)
+        if (getPieces(piece.color).contains(piece)) getPieces(piece.color).remove(piece)
+        else {
+            val removeArray = GdxArray<Piece>()
+            val array = if (piece.color == Piece.Color.BLACK) black else white
+            array.forEach {
+                if (it.x == piece.x && it.y == piece.y) removeArray.add(it)
+            }
+            removeArray.forEach {
+                array.remove(it)
+            }
+        }
     }
 
     fun getKing(color: Piece.Color): Piece {
