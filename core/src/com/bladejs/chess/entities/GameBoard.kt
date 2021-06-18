@@ -109,6 +109,15 @@ object GameBoard {
     fun remove(piece: Piece) {
         pieces.remove(piece)
         board[piece.x][piece.y].piece = null
+        //removing bugged pieces:
+        //TODO: find a better solution
+        val removeArray = GdxArray<Piece>()
+        pieces.forEach {
+            if (it.x == piece.x && it.y == piece.y) removeArray.add(it)
+        }
+        removeArray.forEach {
+            pieces.remove(it)
+        }
     }
 
     fun highlight(fields: GdxArray<Position>) {
