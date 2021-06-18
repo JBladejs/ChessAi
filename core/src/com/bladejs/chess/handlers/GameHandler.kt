@@ -82,7 +82,7 @@ object GameHandler {
         piece.moveCount++
     }
 
-    fun move(piece: Piece, x: Int, y: Int, foresight: Boolean = true, list: Boolean = false) {
+    fun move(piece: Piece, x: Int, y: Int, foresight: Boolean = true, list: Boolean = false, moveGeneration: Boolean = true) {
         if (piece.canMoveTo(x, y, list, foresight)) {
             val fromX = piece.x
             val fromY = piece.y
@@ -108,7 +108,7 @@ object GameHandler {
                         GameBoard.fieldFrom = Pair(fromX, fromY)
                         GameBoard.fieldTo = Pair(x, y)
                         checkForMate()
-                        generateAvailableMoves()
+                        if (moveGeneration) generateAvailableMoves()
                         if (aiEnabled && currentPlayer == Piece.Color.BLACK) /*aiMove()*/ aiTurn = true
                     }
 //                    MoveHandler.confirmMove()
@@ -134,15 +134,15 @@ object GameHandler {
                 GameBoard.fieldFrom = Pair(fromX, fromY)
                 GameBoard.fieldTo = Pair(x, y)
                 checkForMate()
-                generateAvailableMoves()
+                if (moveGeneration) generateAvailableMoves()
                 if (aiEnabled && currentPlayer == Piece.Color.BLACK) /*aiMove()*/ aiTurn = true
             }
         }
     }
 
-    fun move(startX: Int, startY: Int, endX: Int, endY: Int, foresight: Boolean = true, list: Boolean = false) {
+    fun move(startX: Int, startY: Int, endX: Int, endY: Int, foresight: Boolean = true, list: Boolean = false, moveGeneration: Boolean = true) {
         if (GameBoard[startX][startY].isEmpty) return
-        move(GameBoard[startX][startY].piece!!, endX, endY, foresight, list)
+        move(GameBoard[startX][startY].piece!!, endX, endY, foresight, list, moveGeneration)
     }
 
     fun checkForCheck(color: Piece.Color): Boolean {

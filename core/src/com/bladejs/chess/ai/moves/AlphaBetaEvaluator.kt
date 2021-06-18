@@ -45,7 +45,8 @@ class AlphaBetaEvaluator(private val treeHeight: Int): MoveEvaluator {
 //        if (node.fromX == 4 && node.fromY == 0 && node.toX == 0 && node.toY == 0) {
 //            println("debug")
 //        }
-        GameHandler.move(node.fromX, node.fromY, node.toX, node.toY, list = true)
+        //TODO: find the source of the problem
+        GameHandler.move(node.fromX, node.fromY, node.toX, node.toY, list = true, moveGeneration = depth != 0)
         val state = GameHandler.checkForMate(true)
         if (depth == 0 || state == GameState.WHITE_WON || state == GameState.BLACK_WON || state == GameState.DRAW) {
             var value = AiPlayer.boardEval.evaluateBoard(state)
