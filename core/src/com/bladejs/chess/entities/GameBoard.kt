@@ -106,7 +106,7 @@ object GameBoard {
                     i = -1
                 }
             }
-            if (char.isDigit()) i += char.toInt() else i++
+            if (char.isDigit()) i += Character.getNumericValue(char) else i++
         }
     }
 
