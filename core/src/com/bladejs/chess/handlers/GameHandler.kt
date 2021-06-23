@@ -158,6 +158,7 @@ object GameHandler {
     fun checkForMate(planning: Boolean = false): GameState {
         if (!aiMoving || planning) {
             if (positionMap.checkPosition(GameBoard.getFEN()) == 3) {
+                if (!aiMoving && !planning) aiEnabled = false
                 if (!planning) GameBoard.gameOverWindow = GameOverWindow(Gdx.graphics.height * 0.11111f, GameOverWindow.State.DRAW)
                 return GameState.DRAW
             }
@@ -167,6 +168,7 @@ object GameHandler {
                 if (it.getAvailableMoves().size > 0) return GameState.ONGOING
             }
             return if (checkForCheck(currentPlayer)) {
+                if (!aiMoving && !planning) aiEnabled = false
                 if (currentPlayer == Piece.Color.WHITE) {
                     if (!planning) GameBoard.gameOverWindow = GameOverWindow(Gdx.graphics.height * 0.11111f, GameOverWindow.State.LOOSE)
                     GameState.BLACK_WON
