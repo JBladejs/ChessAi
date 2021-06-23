@@ -32,53 +32,18 @@ object GameBoard {
     var rendering = true
 
     fun reset() {
+        setBoard("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR/w")
+        GameHandler.positionMap.addToPosition(getFEN())
+        GameHandler.generateAvailableMoves()
+    }
+
+    init {
         for (i in 0..7) {
             board.add(GdxArray(8))
             for (j in 0..7) {
                 board[i].add(BoardField())
             }
         }
-        //TODO: implement FEN notation
-        for (i in 0..7) add(Pawn(i, 1, WHITE))
-        for (i in 0..7) add(Pawn(i, 6, BLACK))
-        add(King(4, 0, WHITE))
-        add(Queen(3, 0, WHITE))
-        add(Rook(0, 0, WHITE))
-        add(Rook(7, 0, WHITE))
-        add(Bishop(2, 0, WHITE))
-        add(Bishop(5, 0, WHITE))
-        add(Knight(1, 0, WHITE))
-        add(Knight(6, 0, WHITE))
-        add(King(4, 7, BLACK))
-        add(Queen(3, 7, BLACK))
-        add(Rook(0, 7, BLACK))
-        add(Rook(7, 7, BLACK))
-        add(Bishop(2, 7, BLACK))
-        add(Bishop(5, 7, BLACK))
-        add(Knight(1, 7, BLACK))
-        add(Knight(6, 7, BLACK))
-
-//        debug:
-//        add(King(0, 6, WHITE))
-//        add(King(7, 7, BLACK))
-//        add(Bishop(3, 6, BLACK))
-//        add(Queen(1, 4, BLACK))
-//        add(Pawn(5, 2, BLACK))
-//        add(Pawn(6, 1, BLACK))
-//        add(Pawn(7, 2, BLACK))
-//        add(Queen(3, 0, BLACK))
-
-//        add(Pawn(0, 1, WHITE))
-//        add(King(4, 0, WHITE))
-//        add(Rook(0, 0, WHITE))
-//        add(Rook(7, 0, WHITE))
-//        add(King(4, 7, BLACK))
-//        add(Queen(3, 7, BLACK))
-
-        GameHandler.generateAvailableMoves()
-    }
-
-    init {
         reset()
     }
 
@@ -116,6 +81,33 @@ object GameBoard {
         }
         fen += if (GameHandler.currentPlayer == WHITE) 'w' else 'b'
         return fen
+    }
+
+    fun setBoard(fen: String) {
+        var i = 0
+        var j = 7
+        for (char in fen) {
+            if (j < 0) GameHandler.currentPlayer = if (char == 'b') BLACK else WHITE
+            when (char) {
+                'B' -> add(Bishop(i, j, WHITE))
+                'b' -> add(Bishop(i, j, BLACK))
+                'K' -> add(King(i, j, WHITE))
+                'k' -> add(King(i, j, BLACK))
+                'N' -> add(Knight(i, j, WHITE))
+                'n' -> add(Knight(i, j, BLACK))
+                'P' -> add(Pawn(i, j, WHITE))
+                'p' -> add(Pawn(i, j, BLACK))
+                'Q' -> add(Queen(i, j, WHITE))
+                'q' -> add(Queen(i, j, BLACK))
+                'R' -> add(Rook(i, j, WHITE))
+                'r' -> add(Rook(i, j, BLACK))
+                '/' -> {
+                    j--
+                    i = -1
+                }
+            }
+            if (char.isDigit()) i += char.toInt() else i++
+        }
     }
 
     operator fun get(i: Int): GdxArray<BoardField> = board[i]

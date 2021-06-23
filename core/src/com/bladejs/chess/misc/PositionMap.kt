@@ -3,8 +3,7 @@ package com.bladejs.chess.misc
 import com.badlogic.gdx.utils.ArrayMap
 
 class PositionMap {
-    //TODO: add first position here
-    val map = ArrayMap<String, Int>()
+    private val map = ArrayMap<String, Int>()
 
     fun addToPosition(fen: String) {
         if (map[fen] == null) map.put(fen, 1)
