@@ -1,17 +1,15 @@
 package com.bladejs.chess.handlers
 
-import com.badlogic.gdx.Game
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.utils.Array
 import com.bladejs.chess.ai.AiPlayer
-import com.bladejs.chess.ai.board.PieceEvaluator
-import com.bladejs.chess.ai.board.PositionEvaluator
 import com.bladejs.chess.entities.GameBoard
 import com.bladejs.chess.entities.pieces.*
 import com.bladejs.chess.entities.windows.GameOverWindow
 import com.bladejs.chess.misc.GameState
 import com.bladejs.chess.misc.Move
 import com.bladejs.chess.misc.Position
+import com.bladejs.chess.misc.PositionMap
 import kotlin.math.abs
 
 //TODO: add board generation here
@@ -21,6 +19,7 @@ object GameHandler {
     var aiMoving = false
     var aiTurn = false
     var aiCounter = 0
+    val positionMap = PositionMap()
 
     internal fun changeCurrentPlayer() {
         currentPlayer = if (currentPlayer == Piece.Color.WHITE) Piece.Color.BLACK else Piece.Color.WHITE
@@ -102,11 +101,12 @@ object GameHandler {
 //                        GameBoard.promotionWindow.open(Position(x, y))
 //                    else addPiece(Queen(x, y, Piece.Color.BLACK))
                     addPiece(Queen(x, y, currentPlayer))
-                    MoveHandler.confirmMove()
                     changeCurrentPlayer()
+                    MoveHandler.confirmMove(foresight)
                     if (foresight) {
                         GameBoard.fieldFrom = Pair(fromX, fromY)
                         GameBoard.fieldTo = Pair(x, y)
+                        println(positionMap.checkPosition(GameBoard.getFEN()))
                         checkForMate()
                         if (moveGeneration) generateAvailableMoves()
                         if (aiEnabled && currentPlayer == Piece.Color.BLACK) /*aiMove()*/ aiTurn = true
@@ -128,8 +128,8 @@ object GameHandler {
             }
             //Normal move
             forceMove(piece, x, y)
-            MoveHandler.confirmMove()
             changeCurrentPlayer()
+            MoveHandler.confirmMove(foresight)
             if (foresight) {
                 GameBoard.fieldFrom = Pair(fromX, fromY)
                 GameBoard.fieldTo = Pair(x, y)
@@ -157,6 +157,10 @@ object GameHandler {
     //TODO: find all the places where i iteratively change an array im working on and find a solution to fix them
     fun checkForMate(planning: Boolean = false): GameState {
         if (!aiMoving || planning) {
+            if (positionMap.checkPosition(GameBoard.getFEN()) == 3) {
+                if (!planning) GameBoard.gameOverWindow = GameOverWindow(Gdx.graphics.height * 0.11111f, GameOverWindow.State.DRAW)
+                return GameState.DRAW
+            }
             val pieceSet = Array<Piece>()
             pieceSet.addAll(GameBoard.pieces.getPieces(currentPlayer))
             pieceSet.forEach {
@@ -189,36 +193,5 @@ object GameHandler {
         for (i in 0 until pieces.size) {
             pieces[i].generateAvailableMoves()
         }
-    }
-
-    //For debugging:
-    //For debugging:
-    fun getBoardPrint(): String {
-        var text = ""
-        for (j in 7 downTo 0) {
-            for (i in 0..7) {
-                var a = ""
-                var b = ""
-                if (GameBoard[i][j].piece == null) {
-                    a = "x"
-                    b = "x"
-                }
-                else{
-                    a = when(GameBoard[i][j].piece) {
-                        is Bishop -> "B"
-                        is King -> "K"
-                        is Pawn -> "P"
-                        is Queen -> "Q"
-                        is Rook -> "R"
-                        is Knight -> "N"
-                        else -> "x"
-                    }
-                    b = if (GameBoard[i][j].piece!!.color == Piece.Color.BLACK) "b" else "w"
-                }
-                text += "$a$b "
-            }
-            text += "\n"
-        }
-        return text
     }
 }

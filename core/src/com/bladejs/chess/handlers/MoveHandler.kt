@@ -1,5 +1,6 @@
 package com.bladejs.chess.handlers
 
+import com.badlogic.gdx.Game
 import com.bladejs.chess.entities.GameBoard
 import com.bladejs.chess.entities.pieces.Piece
 import com.bladejs.chess.misc.Move
@@ -32,8 +33,13 @@ object MoveHandler {
         currentPieces.clear()
     }
 
-    internal fun confirmMove() {
-        moves.add(Move(currentMoveTypes.clone(), currentPositions.clone(), currentPieces.clone(), GameBoard.fieldFrom, GameBoard.fieldTo))
+    internal fun confirmMove(includeFEN: Boolean = true) {
+        val fen = if (includeFEN) {
+            GameBoard.getFEN()
+        }
+        else "l"
+        if (includeFEN) GameHandler.positionMap.addToPosition(fen)
+        moves.add(Move(currentMoveTypes.clone(), currentPositions.clone(), currentPieces.clone(), GameBoard.fieldFrom, GameBoard.fieldTo, fen))
         deleteMove()
     }
 
@@ -46,6 +52,7 @@ object MoveHandler {
         }
         GameBoard.fieldFrom = lastMove.fieldFrom
         GameBoard.fieldTo = lastMove.fieldTo
+        if (lastMove.fen != "l") GameHandler.positionMap.removeFromPosition(lastMove.fen)
         moves.removeIndex(moves.size - 1)
         deleteMove()
         return true

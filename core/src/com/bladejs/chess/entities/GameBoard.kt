@@ -82,6 +82,42 @@ object GameBoard {
         reset()
     }
 
+    fun getFEN(): String {
+        var fen = ""
+        var emptyIndex = 0
+        for (i in 7 downTo 0) {
+            for (j in 0..7) {
+                val piece = board[j][i].piece
+                if (piece == null) emptyIndex++
+                else {
+                    if (emptyIndex > 0) {
+                        fen += emptyIndex.toString()
+                        emptyIndex = 0
+                    }
+                    var char = when(piece) {
+                        is Bishop -> 'B'
+                        is King -> 'K'
+                        is Knight -> 'N'
+                        is Pawn -> 'P'
+                        is Queen -> 'Q'
+                        is Rook -> 'R'
+                        else -> 'E'
+                    }
+                    if (piece.color == BLACK) char = char.toLowerCase()
+                    fen += char
+                }
+            }
+            if (emptyIndex > 0) {
+                fen += emptyIndex.toString()
+                emptyIndex = 0
+
+            }
+            fen += '/'
+        }
+        fen += if (GameHandler.currentPlayer == WHITE) 'w' else 'b'
+        return fen
+    }
+
     operator fun get(i: Int): GdxArray<BoardField> = board[i]
 
     operator fun get(i: Int, j: Int): BoardField = board[i][j]
