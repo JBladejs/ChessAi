@@ -106,7 +106,6 @@ object GameHandler {
                     if (foresight) {
                         GameBoard.fieldFrom = Pair(fromX, fromY)
                         GameBoard.fieldTo = Pair(x, y)
-                        println(positionMap.checkPosition(GameBoard.getFEN()))
                         checkForMate()
                         if (moveGeneration) generateAvailableMoves()
                         if (aiEnabled && currentPlayer == Piece.Color.BLACK) /*aiMove()*/ aiTurn = true
