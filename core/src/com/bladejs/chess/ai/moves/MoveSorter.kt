@@ -22,7 +22,6 @@ class MoveSorter {
                 }
                 if (max) -compVal else compVal
             }
-            println()
         }
     }
 
