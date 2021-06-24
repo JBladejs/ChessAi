@@ -16,12 +16,13 @@ class MoveSorter {
                 val move1val = moveMap[move1]
                 val move2val = moveMap[move2]
                 val compVal = when {
-                    move2val == null -> 1
-                    move1val == null -> -1
+                    move2val == null -> -1
+                    move1val == null -> 1
                     else -> move1val.compareTo(move2val)
                 }
                 if (max) -compVal else compVal
             }
+            println()
         }
     }
 
