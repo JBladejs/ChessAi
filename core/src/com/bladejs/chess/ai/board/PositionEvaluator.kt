@@ -119,7 +119,9 @@ object PositionEvaluator: BoardEvaluator {
 
     private fun checkEndGame(): Boolean {
         return if (hasAQueen(Piece.Color.WHITE)) {
-            if (GameBoard.pieces.getPieces(Piece.Color.WHITE).size < 4) {
+            if (!hasAQueen(Piece.Color.BLACK)
+                    || GameBoard.pieces.getPieces(Piece.Color.BLACK).size < 4
+                    || GameBoard.pieces.getPieces(Piece.Color.WHITE).size < 4) {
                 endGame = true
                 true
             } else false
