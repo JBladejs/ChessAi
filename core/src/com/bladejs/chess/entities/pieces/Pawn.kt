@@ -13,7 +13,9 @@ class Pawn(x: Int, y: Int, color: Color) : Piece(Texture("pawn.png"), Texture("p
         if (x !in 0..7 || y !in 0..7) return null
         if (GameBoard[x][y].isEmpty || GameBoard[x][y].piece!!.color == color) return null
         val passingPiece = GameBoard[x][y].piece
-        if (passingPiece is Pawn && passingPiece.moveCount == 1 && passingPiece.movedTwoFields)
+        if (passingPiece is Pawn && passingPiece.moveCount == 1 && passingPiece.movedTwoFields
+                && ((passingPiece.color == Color.WHITE && passingPiece.y == 3)
+                        || (passingPiece.color == Color.BLACK && passingPiece.y == 4)))
             return if (color == Color.BLACK) Position(x, y - 1) else Position(x, y + 1)
         return null
     }
