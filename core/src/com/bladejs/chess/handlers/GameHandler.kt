@@ -14,7 +14,7 @@ import kotlin.math.abs
 
 //TODO: add board generation here
 object GameHandler {
-    var aiEnabled = false
+    var aiEnabled = true
     var currentPlayer = Piece.Color.WHITE
     var aiMoving = false
     var aiTurn = false
