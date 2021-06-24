@@ -11,8 +11,7 @@ import kotlin.math.max
 import kotlin.math.min
 
 class AlphaBetaEvaluator(private val treeHeight: Int): MoveEvaluator {
-//    var alpha = Int.MIN_VALUE
-//    var beta = Int.MAX_VALUE
+    val sorter = MoveSorter()
 
     override fun getBestMove(): MoveNode {
         GameBoard.rendering = false
@@ -26,9 +25,12 @@ class AlphaBetaEvaluator(private val treeHeight: Int): MoveEvaluator {
         var beta = Int.MAX_VALUE
         var node: MoveNode? = null
         var value = Int.MAX_VALUE
+        val fen = GameBoard.getFEN()
         val moves = getAvailableMoves()
+        sorter.sort(moves, fen)
         for (move in moves) {
             val temp = alphaBeta(depth - 1, move, alpha, beta)
+            sorter.add(move, temp, fen)
             if (temp < value) {
                 value = temp
                 node = move
@@ -47,25 +49,31 @@ class AlphaBetaEvaluator(private val treeHeight: Int): MoveEvaluator {
 //        }
         //TODO: find the source of the problem
         GameHandler.move(node.fromX, node.fromY, node.toX, node.toY, list = true, moveGeneration = depth != 0)
+        val fen = GameBoard.getFEN()
         val state = GameHandler.checkForMate(true)
         if (depth == 0 || state == GameState.WHITE_WON || state == GameState.BLACK_WON || state == GameState.DRAW) {
             var value = AiPlayer.boardEval.evaluateBoard(state)
-            //TODO: find a way to substitute this
             if (state == GameState.BLACK_WON) value -= depth
             GameHandler.undo(false)
             return value
         }
         val moves = getAvailableMoves()
         if (GameHandler.currentPlayer == Piece.Color.WHITE) { //IF MAX PLAYER
+            sorter.sort(moves, fen, true)
             for (it in moves) {
-                alpha = max(alpha, alphaBeta(depth - 1, it, alpha, beta))
+                val value = alphaBeta(depth - 1, it, alpha, beta)
+                sorter.add(it, value, fen)
+                alpha = max(alpha, value)
                 if (alpha >= beta) break
             }
             GameHandler.undo(false)
             return alpha
         } else { //IF MIN PLAYER
+            sorter.sort(moves, fen)
             for (it in moves) {
-                beta = min(beta, alphaBeta(depth -1, it, alpha, beta))
+                val value = alphaBeta(depth -1, it, alpha, beta)
+                beta = min(beta, value)
+                sorter.add(it, value, fen)
                 if (alpha >= beta) break
             }
             //TODO: check if it should be false or not
